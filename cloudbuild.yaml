@@ -11,7 +11,7 @@ steps:
          '--image', 'gcr.io/infrastructure-public/tef-website:${_TAG}',
          '--region', 'europe-west2',
          '--platform', 'managed',
-         '--port', '80',
+         '--port', '5000',
          '--allow-unauthenticated'
   ]
   id: deploy
