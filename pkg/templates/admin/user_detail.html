@@ -1,0 +1,170 @@
+{% extends "admin/adminlayout.html" %}
+{% block content %}
+<div class="container my-5">
+    <div class="bg-white p-5 rounded shadow">
+        <h3 class="text-center mb-4"><b>Applicant Full Details</b></h3>
+
+        <h5 class="mb-3">Personal Info</h5>
+        <ul class="list-group mb-4">
+            <li class="list-group-item"><b>Full Name:</b> {{ user.fullname }}</li>
+            <li class="list-group-item"><b>Age:</b> {{ user.age }}</li>
+            <li class="list-group-item"><b>Level:</b> {{ user.level }} Level</li>
+            <li class="list-group-item"><b>School:</b> {{ user.school }}</li>
+            <li class="list-group-item"><b>Phone:</b> {{ user.phone }}</li>
+            <li class="list-group-item"><b>Email:</b> {{ user.email }}</li>
+            <li class="list-group-item"><b>Guardian:</b> {{ user.guardian }}</li>
+            <li class="list-group-item"><b>Occupation:</b> {{ user.occupation }}</li>
+        </ul>
+
+                    {% if information %}
+    <h5 class="mb-3">Submitted Information</h5>
+    <ul class="list-group">
+        <li class="list-group-item"><b>Financial Background:</b> {{ information.financial }}</li>
+        <li class="list-group-item"><b>Intelligence:</b> {{ information.intelligence }}</li>
+        <li class="list-group-item"><b>Grit:</b> {{ information.grit }}</li>
+        <li class="list-group-item"><b>Growth:</b> {{ information.growth }}</li>
+        <li class="list-group-item"><b>Giving Back:</b> {{ information.giving_back }}</li>
+
+        <li class="list-group-item"><b>WAEC Result:</b><br>
+            {% if information.waec_file %}
+                <img src="/static/upload/{{ information.waec_file }}" alt="WAEC Result" class="img-fluid" style="max-width: 200px;"><br>
+                <a href="/static/upload/{{ information.waec_file}}" download class="btn btn-primary btn-sm mt-2">Download WAEC Result</a>
+                <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                    View Waec Result
+                </button>
+            {% else %}
+                <span class="text-muted">No file uploaded</span>
+            {% endif %}
+        </li>
+
+        <li class="list-group-item"><b>JAMB Result:</b><br>
+            
+            {% if information.transcript %}
+                <img src="/static/upload/{{ information.jamb_file }}" alt="WAEC Result" class="img-fluid" style="max-width: 200px;"><br>
+                <a href="/static/upload/{{ information.jamb_file}}" download class="btn btn-primary btn-sm mt-2">Download JAMB Result</a>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn-sm mt-2 btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                View JAMB Result
+                </button>
+
+
+            {% else %}
+                <span class="text-muted">No file uploaded</span>
+            {% endif %}
+        </li>
+
+        <li class="list-group-item"><b>Transcript:</b><br>
+            
+           {% if information.transcript %}
+           
+            <img src="/static/upload/{{ information.transcript }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
+                   <a href="/static/upload/{{ information.transcript }}" download class="btn btn-primary btn-sm mt-2">⬇ Download Transcript</a>
+                <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                    View transcript
+                </button>
+                  
+                {% endif %}
+
+        </li>
+        
+        
+    </ul>
+            {% endif %}
+            {% if user.approved == "approved" or user.approved == "decline" %}
+
+            <div>
+                <span class="p-2 bg-success text-white"> This Applicant has been reviewed</span>
+            </div>
+            {% else %}
+               <div style="display: flex;">
+                 <div class="mt-4">
+                    <a href="{{ url_for('approve_user', user_id=user.id) }}" class="btn text-white bg-success text-sm">Approve Applicant</a>
+                </div>
+                <div class="mt-4 mx-2">
+                    <a href="{{ url_for('decline_user', user_id=user.id) }}" class="btn text-white bg-danger text-sm">Decline Applicant</a>
+                </div>
+               </div>
+            {% endif %}
+
+
+
+        <div class="mt-4">
+            <a href="{{ url_for('all_users') }}" class="btn btn-secondary">Back to Users</a>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <img src="/static/upload/{{ information.transcript }}" alt="WAEC Result" class="img-fluid" style="max-width: 100%; max-height: 1000px;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <img src="/static/upload/{{ information.jamb_file }}" alt="WAEC Result" class="img-fluid" style="max-width: 100%; max-height: 1000px;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <img src="/static/upload/{{ information.waec_file }}" alt="WAEC Result" class="img-fluid" style="max-width: 100%; max-height: 1000px;">      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+
+
+
+
+
+
+]
+
+
+
