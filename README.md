@@ -1,4 +1,4 @@
-# TEFoundation Flask Application
+### TEFoundation Flask Application
 
 A Flask web application with Docker support for easy deployment and development.
 
