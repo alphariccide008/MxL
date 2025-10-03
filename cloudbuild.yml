@@ -17,7 +17,7 @@ steps:
   id: deploy
   waitFor: ['push']
 images: [
-  'gcr.io/infrastructure-public/<Name_of_image>:${_TAG}'
+  'gcr.io/infrastructure-public/tef-website:${_TAG}'
 ]
 substitutions:
   _TAG: latest
