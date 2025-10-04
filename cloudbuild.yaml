@@ -14,7 +14,7 @@ steps:
         else
           echo "Repository already exists."
         fi
-  - ##Build image
+  - #Build image
     name: "gcr.io/cloud-builders/docker"
     args:
       [
