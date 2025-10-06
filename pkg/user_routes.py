@@ -41,9 +41,13 @@ ALLOWED_EXTENSIONS = {"pdf", "jpg", "jpeg", "png"}
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
 @app.route("/")
 def home():
+    return redirect(url_for('scholarship'))
+
+
+@app.route("/scholarshipapplication/")
+def scholarship():
     return render_template('users/index.html')
 
 
