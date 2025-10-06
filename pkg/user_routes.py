@@ -192,12 +192,12 @@ def error_page(errors):
 
 @app.errorhandler(500)
 def server_error_page(errors):
-    return render_template("users/error.html")
+    return render_template("users/forbidden.html")
  
 
 @app.errorhandler(403)
 def forbbiden_page(errors):
-    return render_template("users/error.html")
+    return render_template("users/badrequest.html")
 
 
 
