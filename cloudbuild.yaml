@@ -1,0 +1,47 @@
+steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "create-repo"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        if ! gcloud artifacts repositories describe tef-website --location=europe-west2 >/dev/null 2>&1; then
+          echo "Repository 'tef-website' not found — creating it..."
+          gcloud artifacts repositories create tef-website \
+            --repository-format=docker \
+            --location=europe-west2 \
+            --description="Repository for TEF website images"
+        else
+          echo "Repository already exists."
+        fi
+
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build-image"
+    args:
+      [
+        "build",
+        "-t",
+        "europe-west2-docker.pkg.dev/infrastructure-public/tef-website/tef-website",
+        "."
+      ]
+
+  - name: "gcr.io/cloud-builders/docker"
+    id: "push-image"
+    args:
+      [
+        "push",
+        "europe-west2-docker.pkg.dev/infrastructure-public/tef-website/tef-website"
+      ]
+
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: "deploy-cloud-run"
+    args:
+      [
+        "run",
+        "deploy", "tef-website",
+        "--image", "europe-west2-docker.pkg.dev/infrastructure-public/tef-website/tef-website",
+        "--region", "europe-west2",
+        "--platform", "managed",
+        "--allow-unauthenticated",
+        "--port", "5000"
+      ]
