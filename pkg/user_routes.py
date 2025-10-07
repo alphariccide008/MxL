@@ -46,7 +46,7 @@ def home():
     return redirect(url_for('scholarship'))
 
 
-@app.route("/scholarshipapplication/")
+@app.route("/scholarshipapplication")
 def scholarship():
     return render_template('users/index.html')
 
