@@ -7,18 +7,22 @@ services:
       - FLASK_ENV=production
       - DATABASE_URL=mysql+mysqlconnector://root:password@db:3306/moniepoint
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./upload:/app/upload
       - ./uploads:/app/uploads
     networks:
       - app-network
+    restart: unless-stopped
 
   db:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: moniepoint
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
     volumes:
@@ -26,6 +30,11 @@ services:
       - ./moniepoint.sql:/docker-entrypoint-initdb.d/moniepoint.sql
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   mysql_data:

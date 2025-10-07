@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(docker-compose down:*)",
+      "Bash(docker compose:*)",
+      "Bash(test:*)",
+      "Bash(powershell:*)",
+      "Bash(dos2unix:*)",
+      "Bash(curl:*)",
+      "Bash(chmod:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
