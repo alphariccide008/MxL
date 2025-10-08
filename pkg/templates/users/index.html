@@ -804,7 +804,7 @@ function showStep(index) {
     nextBtn.type = "button";
   }
 
-  progress.style.width = `${((index + 1) / (steps.length - 1)) * 85}%`;
+  progress.style.width = `${((index + 1) / (steps.length - 1)) * 86}%`;
 }
 
 function validateStep(index) {
@@ -844,7 +844,7 @@ nextBtn.addEventListener("click", (e) => {
       currentStep++;
       showStep(currentStep);
       nextBtn.disabled = false;
-    }, 8000); // 8-second delay
+    }, 7000); // 8-second delay
   } 
   else if (currentStep < steps.length - 2) {
     currentStep++;
