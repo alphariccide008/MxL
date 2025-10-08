@@ -787,16 +787,7 @@ function showStep(index) {
   // Hide back button on first step
   prevBtn.classList.toggle("hidden", index === 0);
 
-  // ✅ Step 5: Change to Submit button
-  if (index === steps.length - 2) {
-    nextBtn.textContent = "Submit Application";
-    nextBtn.type = "submit";
-  } else {
-    nextBtn.textContent = "Next";
-    nextBtn.type = "button";
-  }
-
-  // ✅ Step 6: Hide all navigation buttons
+  // Hide both buttons when showing success step (step 6)
   if (index === steps.length - 1) {
     nextBtn.classList.add("hidden");
     prevBtn.classList.add("hidden");
@@ -804,7 +795,15 @@ function showStep(index) {
     nextBtn.classList.remove("hidden");
   }
 
-  // Update progress bar
+  // Change button text for the second-to-last step
+  if (index === steps.length - 2) {
+    nextBtn.textContent = "Submit Application";
+    nextBtn.type = "button";
+  } else {
+    nextBtn.textContent = "Next";
+    nextBtn.type = "button";
+  }
+
   progress.style.width = `${((index + 1) / (steps.length - 1)) * 100}%`;
 }
 
@@ -833,29 +832,29 @@ function validateStep(index) {
   return valid;
 }
 
-nextBtn.addEventListener("click", (e) => {
-  e.preventDefault(); // Prevent auto-submit for Next
-
+nextBtn.addEventListener("click", () => {
   if (!validateStep(currentStep)) return;
 
-  if (currentStep < steps.length - 2) {
-    // Move to next step
-    currentStep++;
-    showStep(currentStep);
-  } else if (currentStep === steps.length - 2) {
-    // ✅ Step 5: Handle submission and show success screen after delay
+  // Add 8-second delay before showing Step 6 (the final success step)
+  if (currentStep === steps.length - 3) { // right before last step
     nextBtn.disabled = true;
     nextBtn.textContent = "Submitting...";
-
     setTimeout(() => {
-      // Hide all steps
-      steps.forEach(step => step.classList.add("hidden"));
-      // Show success screen (step 6)
-      document.getElementById("successStep").classList.remove("hidden");
-      // Move to step 6
-      currentStep = steps.length - 1;
+      currentStep++;
       showStep(currentStep);
-    }, 7000); // 7-second delay
+      nextBtn.disabled = false;
+    }, 8000); // 8-second delay
+  } 
+  else if (currentStep < steps.length - 2) {
+    currentStep++;
+    showStep(currentStep);
+  } 
+  else {
+    // Final step: show success screen
+    steps.forEach(step => step.classList.add("hidden"));
+    document.getElementById("successStep").classList.remove("hidden");
+    nextBtn.classList.add("hidden");
+    prevBtn.classList.add("hidden");
   }
 });
 
@@ -866,13 +865,13 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-// Optional: Log when submitting
-document.getElementById("multiStepForm").addEventListener("submit", (e) => {
-  e.preventDefault();
+document.getElementById("multiStepForm").addEventListener("submit", () => {
   console.log("Submitting full form data...");
 });
 
 showStep(currentStep);
+
+
 
 
 
