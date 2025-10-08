@@ -786,7 +786,6 @@ function showStep(index) {
     step.classList.toggle("hidden", i !== index);
   });
   prevBtn.classList.toggle("hidden", index === 0);
-
   if (index === steps.length - 2) {
     nextBtn.textContent = "Submit Application";
     nextBtn.type = "button"; // Prevent form auto-submit until we reveal fields
@@ -794,7 +793,6 @@ function showStep(index) {
     nextBtn.textContent = "Next";
     nextBtn.type = "button";
   }
-
   progress.style.width = `${((index + 1) / (steps.length - 1)) * 100}%`;
 }
 
@@ -803,6 +801,7 @@ function validateStep(index) {
   const inputs = steps[index].querySelectorAll(".input-field, textarea, input[type='file']");
   inputs.forEach(input => {
     if (input.type === "file") {
+      // File Input Validation
       if (!input.files || input.files.length === 0) {
         input.classList.add("error1");
         valid = false;
@@ -810,6 +809,7 @@ function validateStep(index) {
         input.classList.remove("error1");
       }
     } else {
+      // Regular Input/Textarea Validation
       if (!input.value.trim()) {
         input.classList.add("error");
         valid = false;
@@ -823,7 +823,6 @@ function validateStep(index) {
 
 nextBtn.addEventListener("click", () => {
   if (!validateStep(currentStep)) return;
-
   if (currentStep < steps.length - 2) {
     currentStep++;
     showStep(currentStep);
@@ -831,17 +830,13 @@ nextBtn.addEventListener("click", () => {
     // ✅ FINAL STEP: Reveal all steps before submitting so hidden fields are sent
     steps.forEach(step => step.classList.add("hidden"));
 
-    // 🕒 Add 8-second delay before showing success page
-    nextBtn.disabled = true;
-    nextBtn.textContent = "Submitting...";
-    prevBtn.classList.add("hidden");
-
+    // ⏳ Add 8-second delay before showing success page
     setTimeout(() => {
       document.getElementById("successStep").classList.remove("hidden");
 
-      // 🚫 Hide buttons on success page
-      nextBtn.classList.add("hidden");
-      prevBtn.classList.add("hidden");
+      // 🚫 Remove buttons on success page
+      nextBtn.style.display = "none";
+      prevBtn.style.display = "none";
     }, 8000);
   }
 });
@@ -853,7 +848,7 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-// ✅ Optional: log form submission
+// ✅ Listen for submission to log all data (optional)
 document.getElementById("multiStepForm").addEventListener("submit", () => {
   console.log("Submitting full form data...");
 });
