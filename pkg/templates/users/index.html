@@ -174,7 +174,7 @@
     <!-- Main Content -->
     <div class="relative md:pt-[20%] z-10 md:ml-[18%] md:pb-[3%]">
       <span class="inline-flex mt-8 items-center gap-2 bg-gray-700 text-sm text-gray-200 md:px-4 py-1.5 rounded-full mb-6 ">
-        ⏰ Applications close 10th October 2025
+        ⏰ Applications close 16th October 2025
       </span>
 
       <h1 class="md:text-[52px] text-[42px] text-white font-bold leading-tight mb-4">
@@ -609,7 +609,7 @@
     <!-- LEFT SIDE -->
     <div class="text-white space-y-6">
       <span class="bg-gray-800 text-sm px-4 py-2 rounded-full inline-block">
-        ⏳ Applications close 10th October 2025
+        ⏳ Applications close 16th October 2025
       </span>
       <h1 class="text-5xl font-bold leading-tight">
         Ready to Build <br/>
@@ -722,7 +722,7 @@
             </div> 
             <h2 class="text-xl font-bold mb-2">Application Submitted!</h2> 
             <p class="text-gray-500">Thank you for applying to the Future Builders STEM Scholarship.</p> 
-            <p class="text-gray-500 mb-4">Stay tuned — and keep building the future.</p> <div class="bg-gray-100 p-3 rounded-lg"> Final awardees will be announced after the deadline (10th October 2025) 
+            <p class="text-gray-500 mb-4">Stay tuned — and keep building the future.</p> <div class="bg-gray-100 p-3 rounded-lg"> Final awardees will be announced after the deadline (16th October 2025) 
             </div> 
           </div> 
           <!-- Navigation Buttons --> 
@@ -774,7 +774,7 @@
 
 
         // form
-      
+// form
 const steps = document.querySelectorAll(".step");
 const nextBtn = document.getElementById("nextBtn");
 const prevBtn = document.getElementById("prevBtn");
@@ -785,7 +785,6 @@ function showStep(index) {
   steps.forEach((step, i) => {
     step.classList.toggle("hidden", i !== index);
   });
-
   prevBtn.classList.toggle("hidden", index === 0);
 
   if (index === steps.length - 2) {
@@ -802,10 +801,8 @@ function showStep(index) {
 function validateStep(index) {
   let valid = true;
   const inputs = steps[index].querySelectorAll(".input-field, textarea, input[type='file']");
-
   inputs.forEach(input => {
     if (input.type === "file") {
-      // File Input Validation
       if (!input.files || input.files.length === 0) {
         input.classList.add("error1");
         valid = false;
@@ -813,7 +810,6 @@ function validateStep(index) {
         input.classList.remove("error1");
       }
     } else {
-      // Regular Input/Textarea Validation
       if (!input.value.trim()) {
         input.classList.add("error");
         valid = false;
@@ -822,10 +818,8 @@ function validateStep(index) {
       }
     }
   });
-
   return valid;
 }
-
 
 nextBtn.addEventListener("click", () => {
   if (!validateStep(currentStep)) return;
@@ -833,15 +827,22 @@ nextBtn.addEventListener("click", () => {
   if (currentStep < steps.length - 2) {
     currentStep++;
     showStep(currentStep);
-  } 
-  else {
+  } else {
     // ✅ FINAL STEP: Reveal all steps before submitting so hidden fields are sent
     steps.forEach(step => step.classList.add("hidden"));
 
-    document.getElementById("successStep").classList.remove("hidden");
+    // 🕒 Add 8-second delay before showing success page
+    nextBtn.disabled = true;
+    nextBtn.textContent = "Submitting...";
+    prevBtn.classList.add("hidden");
 
-    nextBtn.type = "submit"; // Now convert to real submit
-    nextBtn.click(); // Trigger submit
+    setTimeout(() => {
+      document.getElementById("successStep").classList.remove("hidden");
+
+      // 🚫 Hide buttons on success page
+      nextBtn.classList.add("hidden");
+      prevBtn.classList.add("hidden");
+    }, 8000);
   }
 });
 
@@ -852,12 +853,13 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-// ✅ Listen for submission to log all data (optional)
+// ✅ Optional: log form submission
 document.getElementById("multiStepForm").addEventListener("submit", () => {
   console.log("Submitting full form data...");
 });
 
 showStep(currentStep);
+
 
 
 
