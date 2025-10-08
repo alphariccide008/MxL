@@ -25,7 +25,7 @@
         <li class="list-group-item"><b>Growth:</b> {{ information.growth }}</li>
         <li class="list-group-item"><b>Giving Back:</b> {{ information.giving_back }}</li>
 
-        <li class="list-group-item"><b>WAEC Result:</b><br>
+        <li class="list-group-item"><b>WAEC RESULT:</b><br>
             {% if information.waec_file %}
               {% set ext = information.waec_file.rsplit('.', 1)[-1].lower() %}
 
@@ -38,12 +38,13 @@
               {% endif %}
 
               <!-- Download button (works for both) -->
-              <a href="/static/upload/{{ information.waec_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download Transcript</a>
+              <a href="/static/upload/{{ information.waec_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download WAEC RESILT</a>
+              <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1"> View transcript </button>
           {% endif %}
 
         </li>
 
-        <li class="list-group-item"><b>JAMB Result:</b><br>
+        <li class="list-group-item"><b>JAMB RESULT:</b><br>
             
             {% if information.jamb_file %}
               {% set ext = information.jamb_file.rsplit('.', 1)[-1].lower() %}
@@ -57,27 +58,29 @@
               {% endif %}
 
               <!-- Download button (works for both) -->
-              <a href="/static/upload/{{ information.jamb_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download Jamb Result</a>
+              <a href="/static/upload/{{ information.jamb_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download JAMB RESULT</a>
+              <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> View JAMB RESULT </button>
           {% endif %}
 
             
         </li>
 
-        <li class="list-group-item"><b>WAEC RESULT:</b><br>
+        <li class="list-group-item"><b>TRANSCRIPT:</b><br>
             
-           {% if information.waec_file %}
-              {% set ext = information.waec_file.rsplit('.', 1)[-1].lower() %}
+           {% if information.transcript %}
+              {% set ext = information.transcript.rsplit('.', 1)[-1].lower() %}
 
               {% if ext in ['jpg', 'jpeg', 'png',] %}
                   <!-- Display image -->
-                  <img src="/static/upload/{{ information.waec_file }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
+                  <img src="/static/upload/{{ information.transcript }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
               {% elif ext == 'pdf' %}
                   <!-- Display PDF in iframe -->
-                  <iframe src="/static/upload/{{ information.waec_file }}" width="100%" height="600px"></iframe>
+                  <iframe src="/static/upload/{{ information.transcript }}" width="100%" height="600px"></iframe>
               {% endif %}
 
               <!-- Download button (works for both) -->
-              <a href="/static/upload/{{ information.waec_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download Waec Result</a>
+              <a href="/static/upload/{{ information.transcript }}" download class="btn btn-primary btn-sm mt-2">⬇ Download Transcript</a>
+              <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2"> View transcript </button>
           {% endif %}
 
 
@@ -143,7 +146,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -176,7 +179,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
