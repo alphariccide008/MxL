@@ -787,7 +787,16 @@ function showStep(index) {
   // Hide back button on first step
   prevBtn.classList.toggle("hidden", index === 0);
 
-  // Hide both buttons when showing success step (Step 6)
+  // Change button text on step 5
+  if (index === steps.length - 2) {
+    nextBtn.textContent = "Submit Application";
+    nextBtn.type = "button"; // Still not submitting yet
+  } else {
+    nextBtn.textContent = "Next";
+    nextBtn.type = "button";
+  }
+
+  // Hide both buttons on success screen (step 6)
   if (index === steps.length - 1) {
     nextBtn.classList.add("hidden");
     prevBtn.classList.add("hidden");
@@ -795,16 +804,8 @@ function showStep(index) {
     nextBtn.classList.remove("hidden");
   }
 
-  // ✅ Change button to 'Submit Application' and make it type="submit" only on Step 5
-  if (index === steps.length - 2) {
-    nextBtn.textContent = "Submit Application";
-    nextBtn.type = "submit";
-  } else {
-    nextBtn.textContent = "Next";
-    nextBtn.type = "button";
-  }
-
-  progress.style.width = `${((index + 1) / (steps.length - 1)) * 86}%`;
+  // Update progress bar
+  progress.style.width = `${((index + 1) / (steps.length - 1)) * 87}%`;
 }
 
 function validateStep(index) {
@@ -813,6 +814,7 @@ function validateStep(index) {
 
   inputs.forEach(input => {
     if (input.type === "file") {
+      // File Input Validation
       if (!input.files || input.files.length === 0) {
         input.classList.add("error1");
         valid = false;
@@ -820,6 +822,7 @@ function validateStep(index) {
         input.classList.remove("error1");
       }
     } else {
+      // Regular Input/Textarea Validation
       if (!input.value.trim()) {
         input.classList.add("error");
         valid = false;
@@ -832,23 +835,37 @@ function validateStep(index) {
   return valid;
 }
 
-nextBtn.addEventListener("click", (e) => {
+nextBtn.addEventListener("click", () => {
   if (!validateStep(currentStep)) return;
 
-  // ✅ Add 8-second delay *before showing Step 6 (success)* after Step 5 submission
-  if (currentStep === steps.length - 2) {
-    e.preventDefault(); // prevent immediate form submission
-    nextBtn.disabled = true;
-    nextBtn.textContent = "Submitting...";
-    setTimeout(() => {
-      currentStep++;
-      showStep(currentStep);
-      nextBtn.disabled = false;
-    }, 8000); // 8-second delay
-  } 
-  else if (currentStep < steps.length - 2) {
+  // Proceed through steps
+  if (currentStep < steps.length - 2) {
     currentStep++;
     showStep(currentStep);
+  } 
+  else if (currentStep === steps.length - 2) {
+    // ✅ Step 5 (Giving Back) — prepare to submit
+    nextBtn.disabled = true; // Prevent clicking again
+    nextBtn.textContent = "Submitting...";
+
+    // Delay before showing success screen (7 seconds)
+    setTimeout(() => {
+      // Reveal all steps before submission (to include all inputs)
+      steps.forEach(step => step.classList.remove("hidden"));
+
+      // Submit form
+      nextBtn.type = "submit";
+      nextBtn.disabled = false;
+      nextBtn.click(); // Trigger actual submit
+
+      // Show success screen after short delay
+      setTimeout(() => {
+        steps.forEach(step => step.classList.add("hidden"));
+        document.getElementById("successStep").classList.remove("hidden");
+        showStep(steps.length - 1);
+      }, 1000);
+
+    }, 7000); // 7 second delay
   }
 });
 
@@ -859,11 +876,14 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
+// Optional: Log when form submits
 document.getElementById("multiStepForm").addEventListener("submit", () => {
   console.log("Submitting full form data...");
 });
 
 showStep(currentStep);
+
+
 
 
 // FAQ Dropdown
