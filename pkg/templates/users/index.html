@@ -838,7 +838,7 @@ nextBtn.addEventListener("click", () => {
   if (!validateStep(currentStep)) return;
 
   // Add 8-second delay before showing Step 6 (the final success step)
-  if (currentStep === steps.length - 3) { // right before last step
+  if (currentStep === steps.length - 2) { // right before last step
     nextBtn.disabled = true;
     nextBtn.textContent = "Submitting...";
     setTimeout(() => {
@@ -847,7 +847,7 @@ nextBtn.addEventListener("click", () => {
       nextBtn.disabled = false;
     }, 8000); // 8-second delay
   } 
-  else if (currentStep < steps.length - 2) {
+  else if (currentStep < steps.length - 1) {
     currentStep++;
     showStep(currentStep);
   } 
