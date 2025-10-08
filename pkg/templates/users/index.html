@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <title>TEFoundation</title>
+    <title>MoniePoint</title>
      <script src="https://cdn.tailwindcss.com"></script>
      
      <style type="text/css">
@@ -174,7 +174,7 @@
     <!-- Main Content -->
     <div class="relative md:pt-[20%] z-10 md:ml-[18%] md:pb-[3%]">
       <span class="inline-flex mt-8 items-center gap-2 bg-gray-700 text-sm text-gray-200 md:px-4 py-1.5 rounded-full mb-6 ">
-        ⏰ Applications close 16th October 2025
+        ⏰ Applications close 10th October 2025
       </span>
 
       <h1 class="md:text-[52px] text-[42px] text-white font-bold leading-tight mb-4">
@@ -469,7 +469,7 @@
         <div class="flex items-center bg-[#13214e] justify-between  p-4 rounded-xl shadow-sm">
                 <div class="flex items-center">
                 <div class="w-1 h-8 bg-blue-500 rounded mr-3"></div>
-                <span class="">You are part of the 95th percentile of your class</span>
+                <span class="">You have a Second Class Upper (2:1) or First Class standing</span>
                 </div>
                 
         </div>
@@ -609,7 +609,7 @@
     <!-- LEFT SIDE -->
     <div class="text-white space-y-6">
       <span class="bg-gray-800 text-sm px-4 py-2 rounded-full inline-block">
-        ⏳ Applications close  16th October 2025
+        ⏳ Applications close 10th October 2025
       </span>
       <h1 class="text-5xl font-bold leading-tight">
         Ready to Build <br/>
@@ -652,14 +652,14 @@
                 </select>
                 <select name="level" class="input-field mb-2 md:text-[10px] w-full p-3 border rounded-lg">    
                   <option value="" >Select Level</option> 
-                  <option value="200">200</option> 
+                  <option value="Obafemi Awolowo university">200</option> 
                 </select>
               </div> 
             <div class=" mb-2 gap-3"> 
               
               <select name="school" class="input-field mb-2 md:text-[10px] w-full p-3 border rounded-lg">    
               <option value="" >Select school</option> 
-              <option value="Obafemi Awolowo university">Obafemi Awolowo University</option> 
+              <option value="Obafemi Awolowo university">Obafemi Awolowo university</option> 
               <option value="University of Lagos">University of Lagos</option>
               <option value="University of Calabar">University of Calabar</option>
               <option value="University of Abuja">University of Abuja</option>
@@ -722,7 +722,7 @@
             </div> 
             <h2 class="text-xl font-bold mb-2">Application Submitted!</h2> 
             <p class="text-gray-500">Thank you for applying to the Future Builders STEM Scholarship.</p> 
-            <p class="text-gray-500 mb-4">Stay tuned — and keep building the future.</p> <div class="bg-gray-100 p-3 rounded-lg"> Final awardees will be announced after the deadline (16th October 2025) 
+            <p class="text-gray-500 mb-4">Stay tuned — and keep building the future.</p> <div class="bg-gray-100 p-3 rounded-lg"> Final awardees will be announced after the deadline (10th October 2025) 
             </div> 
           </div> 
           <!-- Navigation Buttons --> 
@@ -773,11 +773,12 @@
 
 
 
+        // form
+      
 const steps = document.querySelectorAll(".step");
 const nextBtn = document.getElementById("nextBtn");
 const prevBtn = document.getElementById("prevBtn");
 const progress = document.getElementById("progress");
-const form = document.getElementById("multiStepForm");
 let currentStep = 0;
 
 function showStep(index) {
@@ -787,18 +788,9 @@ function showStep(index) {
 
   prevBtn.classList.toggle("hidden", index === 0);
 
-  // Hide buttons on final success step
-  if (index === steps.length - 1) {
-    nextBtn.classList.add("hidden");
-    prevBtn.classList.add("hidden");
-  } else {
-    nextBtn.classList.remove("hidden");
-  }
-
-  // ✅ Change to submit on the second-to-last step
   if (index === steps.length - 2) {
     nextBtn.textContent = "Submit Application";
-    nextBtn.type = "submit"; // <-- FIXED
+    nextBtn.type = "button"; // Prevent form auto-submit until we reveal fields
   } else {
     nextBtn.textContent = "Next";
     nextBtn.type = "button";
@@ -813,6 +805,7 @@ function validateStep(index) {
 
   inputs.forEach(input => {
     if (input.type === "file") {
+      // File Input Validation
       if (!input.files || input.files.length === 0) {
         input.classList.add("error1");
         valid = false;
@@ -820,6 +813,7 @@ function validateStep(index) {
         input.classList.remove("error1");
       }
     } else {
+      // Regular Input/Textarea Validation
       if (!input.value.trim()) {
         input.classList.add("error");
         valid = false;
@@ -832,28 +826,23 @@ function validateStep(index) {
   return valid;
 }
 
-// Handle Next button click
-nextBtn.addEventListener("click", (e) => {
+
+nextBtn.addEventListener("click", () => {
   if (!validateStep(currentStep)) return;
 
   if (currentStep < steps.length - 2) {
     currentStep++;
     showStep(currentStep);
+  } 
+  else {
+    // ✅ FINAL STEP: Reveal all steps before submitting so hidden fields are sent
+    steps.forEach(step => step.classList.add("hidden"));
+
+    document.getElementById("successStep").classList.remove("hidden");
+
+    nextBtn.type = "submit"; // Now convert to real submit
+    nextBtn.click(); // Trigger submit
   }
-});
-
-// ✅ Handle actual form submission
-form.addEventListener("submit", (e) => {
-  e.preventDefault(); // prevent instant submission
-  if (!validateStep(currentStep)) return;
-
-  nextBtn.disabled = true;
-  nextBtn.textContent = "Submitting...";
-
-  // 8-second delay before submitting to backend
-  setTimeout(() => {
-    form.submit(); // finally submit
-  }, 8000);
 });
 
 prevBtn.addEventListener("click", () => {
@@ -863,10 +852,12 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
+// ✅ Listen for submission to log all data (optional)
+document.getElementById("multiStepForm").addEventListener("submit", () => {
+  console.log("Submitting full form data...");
+});
+
 showStep(currentStep);
-
-
-
 
 
 
