@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <title>TEFoundation</title>
+    <title>TEfoundation</title>
      <script src="https://cdn.tailwindcss.com"></script>
      
      <style type="text/css">
@@ -773,8 +773,7 @@
 
 
 
-
-    // form
+        // form
  
 const steps = document.querySelectorAll(".step");
 const nextBtn = document.getElementById("nextBtn");
@@ -839,7 +838,7 @@ nextBtn.addEventListener("click", () => {
   if (!validateStep(currentStep)) return;
 
   // Add 8-second delay before showing Step 6 (the final success step)
-  if (currentStep === steps.length - 2) { // right before last step
+  if (currentStep === steps.length - 3) { // right before last step
     nextBtn.disabled = true;
     nextBtn.textContent = "Submitting...";
     setTimeout(() => {
