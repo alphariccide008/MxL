@@ -787,16 +787,8 @@ function showStep(index) {
   // Hide back button on first step
   prevBtn.classList.toggle("hidden", index === 0);
 
-  // Hide both buttons when showing success step (Step 6)
-  if (index === steps.length - 1) {
-    nextBtn.classList.add("hidden");
-    prevBtn.classList.add("hidden");
-  } else {
-    nextBtn.classList.remove("hidden");
-  }
-
-  // ✅ Change button to 'Submit Application' and make it type="submit" only on Step 5
-  if (index === steps.length - 1) {
+  // ✅ Step 5: Change to Submit button
+  if (index === steps.length - 2) {
     nextBtn.textContent = "Submit Application";
     nextBtn.type = "submit";
   } else {
@@ -804,7 +796,16 @@ function showStep(index) {
     nextBtn.type = "button";
   }
 
-  progress.style.width = `${((index + 1) / (steps.length - 1)) * 86}%`;
+  // ✅ Step 6: Hide all navigation buttons
+  if (index === steps.length - 1) {
+    nextBtn.classList.add("hidden");
+    prevBtn.classList.add("hidden");
+  } else {
+    nextBtn.classList.remove("hidden");
+  }
+
+  // Update progress bar
+  progress.style.width = `${((index + 1) / (steps.length - 1)) * 100}%`;
 }
 
 function validateStep(index) {
@@ -833,22 +834,28 @@ function validateStep(index) {
 }
 
 nextBtn.addEventListener("click", (e) => {
+  e.preventDefault(); // Prevent auto-submit for Next
+
   if (!validateStep(currentStep)) return;
 
-  // ✅ Add 8-second delay *before showing Step 6 (success)* after Step 5 submission
-  if (currentStep === steps.length - 2) {
-    e.preventDefault(); // prevent immediate form submission
-    nextBtn.disabled = true;
-    nextBtn.textContent = "Submitting...";
-    setTimeout(() => {
-      currentStep++;
-      showStep(currentStep);
-      nextBtn.disabled = false;
-    }, 7000); // 8-second delay
-  } 
-  else if (currentStep < steps.length - 2) {
+  if (currentStep < steps.length - 2) {
+    // Move to next step
     currentStep++;
     showStep(currentStep);
+  } else if (currentStep === steps.length - 2) {
+    // ✅ Step 5: Handle submission and show success screen after delay
+    nextBtn.disabled = true;
+    nextBtn.textContent = "Submitting...";
+
+    setTimeout(() => {
+      // Hide all steps
+      steps.forEach(step => step.classList.add("hidden"));
+      // Show success screen (step 6)
+      document.getElementById("successStep").classList.remove("hidden");
+      // Move to step 6
+      currentStep = steps.length - 1;
+      showStep(currentStep);
+    }, 7000); // 7-second delay
   }
 });
 
@@ -859,11 +866,14 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-document.getElementById("multiStepForm").addEventListener("submit", () => {
+// Optional: Log when submitting
+document.getElementById("multiStepForm").addEventListener("submit", (e) => {
+  e.preventDefault();
   console.log("Submitting full form data...");
 });
 
 showStep(currentStep);
+
 
 
 // FAQ Dropdown
