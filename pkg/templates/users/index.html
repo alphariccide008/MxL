@@ -774,7 +774,8 @@
 
 
         // form
-// form
+      
+
 const steps = document.querySelectorAll(".step");
 const nextBtn = document.getElementById("nextBtn");
 const prevBtn = document.getElementById("prevBtn");
@@ -785,23 +786,36 @@ function showStep(index) {
   steps.forEach((step, i) => {
     step.classList.toggle("hidden", i !== index);
   });
+
+  // Hide back button on first step
   prevBtn.classList.toggle("hidden", index === 0);
+
+  // Hide both buttons when showing success step (step 6)
+  if (index === steps.length - 2) {
+    nextBtn.classList.add("hidden");
+    prevBtn.classList.add("hidden");
+  } else {
+    nextBtn.classList.remove("hidden");
+  }
+
+  // Change button text for the second-to-last step
   if (index === steps.length - 2) {
     nextBtn.textContent = "Submit Application";
-    nextBtn.type = "button"; // Prevent form auto-submit until we reveal fields
+    nextBtn.type = "button";
   } else {
     nextBtn.textContent = "Next";
     nextBtn.type = "button";
   }
-  progress.style.width = `${((index + 1) / (steps.length - 1)) * 100}%`;
+
+  progress.style.width = `${((index + 1) / (steps.length - 1)) * 86}%`;
 }
 
 function validateStep(index) {
   let valid = true;
   const inputs = steps[index].querySelectorAll(".input-field, textarea, input[type='file']");
+
   inputs.forEach(input => {
     if (input.type === "file") {
-      // File Input Validation
       if (!input.files || input.files.length === 0) {
         input.classList.add("error1");
         valid = false;
@@ -809,7 +823,6 @@ function validateStep(index) {
         input.classList.remove("error1");
       }
     } else {
-      // Regular Input/Textarea Validation
       if (!input.value.trim()) {
         input.classList.add("error");
         valid = false;
@@ -818,26 +831,33 @@ function validateStep(index) {
       }
     }
   });
+
   return valid;
 }
 
 nextBtn.addEventListener("click", () => {
   if (!validateStep(currentStep)) return;
-  if (currentStep < steps.length - 2) {
+
+  // Add 8-second delay before showing Step 6 (the final success step)
+  if (currentStep === steps.length - 3) { // right before last step
+    nextBtn.disabled = true;
+    nextBtn.textContent = "Submitting...";
+    setTimeout(() => {
+      currentStep++;
+      showStep(currentStep);
+      nextBtn.disabled = false;
+    }, 8000); // 8-second delay
+  } 
+  else if (currentStep < steps.length - 2) {
     currentStep++;
     showStep(currentStep);
-  } else {
-    // ✅ FINAL STEP: Reveal all steps before submitting so hidden fields are sent
+  } 
+  else {
+    // Final step: show success screen
     steps.forEach(step => step.classList.add("hidden"));
-
-    // ⏳ Add 8-second delay before showing success page
-    setTimeout(() => {
-      document.getElementById("successStep").classList.remove("hidden");
-
-      // 🚫 Remove buttons on success page
-      nextBtn.style.display = "none";
-      prevBtn.style.display = "none";
-    }, 8000);
+    document.getElementById("successStep").classList.remove("hidden");
+    nextBtn.classList.add("hidden");
+    prevBtn.classList.add("hidden");
   }
 });
 
@@ -848,12 +868,12 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-// ✅ Listen for submission to log all data (optional)
 document.getElementById("multiStepForm").addEventListener("submit", () => {
   console.log("Submitting full form data...");
 });
 
 showStep(currentStep);
+
 
 
 
