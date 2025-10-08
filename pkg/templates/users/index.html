@@ -773,7 +773,8 @@
 
 
 
-        // form
+
+    // form
  
 const steps = document.querySelectorAll(".step");
 const nextBtn = document.getElementById("nextBtn");
@@ -798,7 +799,7 @@ function showStep(index) {
   }
 
   // Change button text for the second-to-last step
-  if (index === steps.length - 1) {
+  if (index === steps.length - 2) {
     nextBtn.textContent = "Submit Application";
     nextBtn.type = "submit";
   } else {
