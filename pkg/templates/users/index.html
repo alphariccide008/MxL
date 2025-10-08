@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <title>MoniePoint</title>
+    <title>TEfoundation</title>
      <script src="https://cdn.tailwindcss.com"></script>
      
      <style type="text/css">
@@ -798,7 +798,7 @@ function showStep(index) {
   }
 
   // Change button text for the second-to-last step
-  if (index === steps.length - 1) {
+  if (index === steps.length - 2) {
     nextBtn.textContent = "Submit Application";
     nextBtn.type = "submit";
   } else {
@@ -838,7 +838,7 @@ nextBtn.addEventListener("click", () => {
   if (!validateStep(currentStep)) return;
 
   // Add 8-second delay before showing Step 6 (the final success step)
-  if (currentStep === steps.length - 3) { // right before last step
+  if (currentStep === steps.length - 2) { // right before last step
     nextBtn.disabled = true;
     nextBtn.textContent = "Submitting...";
     setTimeout(() => {
