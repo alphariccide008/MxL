@@ -23,6 +23,7 @@ RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/w
 
 # Copy requirements and install Python dependencies
 COPY requirements.txt .
+
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # Copy application code

@@ -51,7 +51,6 @@ def scholarship():
     return render_template('users/index.html')
 
 
-
 @app.route("/form", methods=["GET", "POST"])
 def form():
     if request.method == "POST":
@@ -91,9 +90,9 @@ def form():
         # Handle File Uploads (save directly in "upload/")
         ALLOWED_EXTENSIONS = {'jpg', 'png', 'pdf', 'jpeg'}
 
-# Upload folder
+        # Upload folder
         UPLOAD_FOLDER = os.path.join("pkg", "static", "upload")
-        os.makedirs(UPLOAD_FOLDER, exist_ok=True) 
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
         filesobj = request.files.get('waec')
         filesobj1 = request.files.get('jamb')
@@ -105,55 +104,81 @@ def form():
 
         filename = filesobj.filename
         filename1 = filesobj1.filename
-        filename2 = filesobj2.filename      
+        filename2 = filesobj2.filename
 
         if filename == '' or filename1 == '' or filename2 == '':
             flash('Please upload both Images', category='error')
             return
 
-    # Extract extensions
+        # Extract extensions
         ext = filename.rsplit('.', 1)[-1].lower()
         ext1 = filename1.rsplit('.', 1)[-1].lower()
         ext2 = filename2.rsplit('.', 1)[-1].lower()
 
-    # ✅ Correct validation
+        # ✅ Correct validation
         if ext in ALLOWED_EXTENSIONS and ext1 in ALLOWED_EXTENSIONS and ext2 in ALLOWED_EXTENSIONS:
-        # Generate unique + safe filenames
+            # Generate unique + safe filenames
             newname = f"{int(random.random()*10000000)}_{secure_filename(filename)}"
             newname1 = f"{int(random.random()*10000000)}_{secure_filename(filename1)}"
             newname2 = f"{int(random.random()*10000000)}_{secure_filename(filename2)}"
 
-        # Full paths
-        save_path = os.path.join(UPLOAD_FOLDER, newname)
-        save_path1 = os.path.join(UPLOAD_FOLDER, newname1)
-        save_path2 = os.path.join(UPLOAD_FOLDER, newname2)
+            # Full paths
+            save_path = os.path.join(UPLOAD_FOLDER, newname)
+            save_path1 = os.path.join(UPLOAD_FOLDER, newname1)
+            save_path2 = os.path.join(UPLOAD_FOLDER, newname2)
 
-        # Save files
-        filesobj.save(save_path)
-        filesobj1.save(save_path1)
-        filesobj2.save(save_path2)
-        # Save info
-        new_info = Information(
-            financial=financial,
-            intelligence=intelligence,
-            grit=grit,
-            growth=growth,
-            giving_back=giving_back,
-            waec_file=newname,
-            jamb_file=newname1,
-            transcript=newname2,
-           
-            user_id=new_user.id,
-        )
-        db.session.add(new_info)
-        db.session.commit()
+            # Save files
+            filesobj.save(save_path)
+            filesobj1.save(save_path1)
+            filesobj2.save(save_path2)
 
-        # Console log instead of return
-        print(f"✅ User created: {new_user.fullname} ({new_user.school})")
-        print(f"✅ Files: WAEC={filename}, JAMB={filename1} ,Transcript={filename2}")
-        print(f"✅ Files: Giving={giving_back}")
+            # Save info
+            new_info = Information(
+                financial=financial,
+                intelligence=intelligence,
+                grit=grit,
+                growth=growth,
+                giving_back=giving_back,
+                waec_file=newname,
+                jamb_file=newname1,
+                transcript=newname2,
+                user_id=new_user.id,
+            )
+            db.session.add(new_info)
+            db.session.commit()
 
-        return ("", 204)  # no page reload, frontend just continues
+            # ✅ CSV BACKUP SECTION (Added)
+            import csv
+            from datetime import datetime
+
+            BACKUP_FOLDER = "backups"
+            os.makedirs(BACKUP_FOLDER, exist_ok=True)
+            csv_file = os.path.join(BACKUP_FOLDER, "form_backup.csv")
+
+            file_exists = os.path.isfile(csv_file)
+
+            with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
+                writer = csv.writer(file)
+                # Add header if file is new
+                if not file_exists:
+                    writer.writerow([
+                        "timestamp", "user_id", "fullname", "email", "age", "level", "school", "phone", 
+                        "guardian", "occupation", "financial", "intelligence", "grit", "growth", 
+                        "giving_back", "waec_file", "jamb_file", "transcript"
+                    ])
+                writer.writerow([
+                    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    new_user.id, fullname, email, age, level, school, phone, guardian, occupation,
+                    financial, intelligence, grit, growth, giving_back, newname, newname1, newname2
+                ])
+            # ✅ End of CSV append
+
+            # Console log instead of return
+            print(f"✅ User created: {new_user.fullname} ({new_user.school})")
+            print(f"✅ Files: WAEC={filename}, JAMB={filename1} ,Transcript={filename2}")
+            print(f"✅ Files: Giving={giving_back}")
+
+            return ("", 204)  # no page reload, frontend just continues
 
     return render_template('users/index.html')
 
