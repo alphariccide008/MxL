@@ -4,8 +4,8 @@ SECRET_KEY = getenv("SECRET_KEY", "R5T6Y7UHJIKOLO987EROELFKGWASDDJNRFTGHVN")
 ADMIN_EMAIL = getenv("ADMIN_EMAIL", "godspowerlawrence008@gmail.com")
 USER_PROFILE_PATH = "pkg/static/profiles/"
 
-# Use environment variable for database URL, fallback to Docker default
-DATABASE_URL = getenv("DATABASE_URL", "mysql+mysqlconnector://root:password@db:3306/moniepoint")
+# Use environment variable for database URL, fallback to PostgreSQL default
+DATABASE_URL = getenv("DATABASE_URL", "postgresql://moniepoint_user:fywokEqHfMiMguQwq2ynmB3nSZ5tdQlK@dpg-d3jnsrl6ubrc73d02nsg-a.oregon-postgres.render.com:5432/moniepoint")
 SQLALCHEMY_DATABASE_URI = DATABASE_URL
 
 # Mail configuration

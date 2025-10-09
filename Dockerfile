@@ -2,15 +2,14 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system dependencies including MySQL server and supervisor
+# Install system dependencies including PostgreSQL client and supervisor
 RUN apt-get update && apt-get install -y \
     gcc \
-    default-libmysqlclient-dev \
+    libpq-dev \
     pkg-config \
     wget \
     xfonts-75dpi \
     xfonts-base \
-    default-mysql-server \
     supervisor \
     && rm -rf /var/lib/apt/lists/*
 
@@ -30,20 +29,14 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Create necessary directories
-RUN mkdir -p upload uploads pkg/static/profiles /var/run/mysqld /var/lib/mysql
-
-# Set up MySQL
-RUN chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
-
-# Copy database initialization SQL
-COPY moniepoint.sql /docker-entrypoint-initdb.d/moniepoint.sql
+RUN mkdir -p upload uploads pkg/static/profiles
 
 # Copy supervisor configuration
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Copy startup script
+# Copy startup script and fix line endings
 COPY start.sh /start.sh
-RUN chmod +x /start.sh
+RUN sed -i 's/\r$//' /start.sh && chmod +x /start.sh
 
 # Expose port
 EXPOSE 5000
@@ -51,7 +44,7 @@ EXPOSE 5000
 # Set environment variables
 ENV FLASK_APP=wsgi.py
 ENV FLASK_ENV=production
-ENV DATABASE_URL=mysql+mysqlconnector://root:password@localhost:3306/moniepoint
+ENV DATABASE_URL=postgresql://moniepoint_user:fywokEqHfMiMguQwq2ynmB3nSZ5tdQlK@dpg-d3jnsrl6ubrc73d02nsg-a.oregon-postgres.render.com:5432/moniepoint
 
-# Run both MySQL and Flask app using supervisor
+# Run Flask app using supervisor
 CMD ["/start.sh"]

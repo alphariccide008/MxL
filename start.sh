@@ -1,56 +1,38 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Starting TEF Website (All-in-One Container)"
-echo "=============================================="
+echo "🚀 Starting TEF Website"
+echo "======================="
 
-# Initialize MySQL if not already initialized
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "📦 Initializing MySQL database..."
-    mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
-fi
+echo "🔧 Using external PostgreSQL database"
 
-# Start MySQL temporarily to set up database
-echo "🔧 Starting MySQL for setup..."
-mysqld_safe --datadir=/var/lib/mysql &
-MYSQL_PID=$!
+# Auto-run database migrations (safe to run multiple times)
+echo "📊 Checking database migrations..."
+flask db upgrade || echo "⚠️  Migration failed or already up to date"
 
-# Wait for MySQL to be ready
-echo "⏳ Waiting for MySQL to start..."
-for i in {1..30}; do
-    if mysqladmin ping -h localhost --silent; then
-        echo "✅ MySQL is ready!"
-        break
-    fi
-    echo "   Waiting... ($i/30)"
-    sleep 2
-done
+# Create admin user if doesn't exist (safe to run multiple times)
+echo "👤 Checking admin user..."
+python -c "
+from pkg.models import db, Admin
+from pkg import app
 
-# Create database and user
-echo "📚 Setting up database..."
-mysql -u root <<-EOSQL
-    ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
-    CREATE DATABASE IF NOT EXISTS moniepoint;
-    CREATE USER IF NOT EXISTS 'appuser'@'localhost' IDENTIFIED BY 'password';
-    GRANT ALL PRIVILEGES ON moniepoint.* TO 'appuser'@'localhost';
-    GRANT ALL PRIVILEGES ON moniepoint.* TO 'root'@'localhost';
-    FLUSH PRIVILEGES;
-EOSQL
-
-# Import SQL file if exists
-if [ -f "/docker-entrypoint-initdb.d/moniepoint.sql" ]; then
-    echo "📥 Importing database schema..."
-    mysql -u root -ppassword moniepoint < /docker-entrypoint-initdb.d/moniepoint.sql
-fi
-
-# Stop temporary MySQL
-echo "🔄 Stopping temporary MySQL..."
-mysqladmin -u root -ppassword shutdown
-wait $MYSQL_PID
+with app.app_context():
+    existing = Admin.query.filter_by(email='hello@tosineniolorundafoundation.com').first()
+    if not existing:
+        admin = Admin(
+            email='hello@tosineniolorundafoundation.com',
+            password='scrypt:32768:8:1\$VA4acqcH8l6eyJlt\$c8d7a3aa2d7c881f61917989d6481597d26907be2cf6a8ce664bd2981260612da8ed9e01f6e6f31d505230657ffe0566015f0b24f0c9456cc439504478cd86dc'
+        )
+        db.session.add(admin)
+        db.session.commit()
+        print('✅ Admin user created')
+    else:
+        print('✅ Admin user already exists')
+" || echo "⚠️  Admin check failed"
 
 echo "✅ Setup complete!"
-echo "🚀 Starting all services..."
+echo "🚀 Starting Flask application..."
 echo ""
 
-# Start supervisor to run both MySQL and Flask app
+# Start supervisor to run Flask app
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
