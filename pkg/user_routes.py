@@ -115,9 +115,9 @@ def form():
                 return
 
         # ✅ Upload to Cloudinary
-        upload_waec = cloudinary.uploader.upload(filesobj, folder="scholarship_uploads", resource_type="raw")
-        upload_jamb = cloudinary.uploader.upload(filesobj1, folder="scholarship_uploads", resource_type="raw")
-        upload_transcript = cloudinary.uploader.upload(filesobj2, folder="scholarship_uploads", resource_type="raw")
+        upload_waec = cloudinary.uploader.upload(filesobj, folder="scholarship_uploads", resource_type="auto")
+        upload_jamb = cloudinary.uploader.upload(filesobj1, folder="scholarship_uploads", resource_type="auto")
+        upload_transcript = cloudinary.uploader.upload(filesobj2, folder="scholarship_uploads", resource_type="auto")
 
         waec_url = upload_waec["secure_url"]
         jamb_url = upload_jamb["secure_url"]
