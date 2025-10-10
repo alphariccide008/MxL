@@ -34,11 +34,15 @@
                   <img src="{{ information.waec_file }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
               {% elif ext == 'pdf' %}
                   <!-- Display PDF in iframe -->
-                  <iframe src="{{ information.waec_file }}" width="100%" height="600px"></iframe>
+                  <embed src="{{ information.jamb_file }}" type="application/pdf" width="100%" height="600px">
+                  <p>Your browser does not support PDF viewing. 
+                    <a href="{{ information.jamb_file }}" target="_blank">Click here to view the file</a>.
+                  </p>
+
               {% endif %}
 
               <!-- Download button (works for both) -->
-              <a href="{{ information.waec_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download WAEC RESILT</a>
+              
               <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1"> View transcript </button>
           {% endif %}
 
@@ -54,7 +58,11 @@
                   <img src="{{ information.jamb_file }}" alt="jamb result" class="img-fluid" style="max-width: 200px;"><br>
               {% elif ext == 'pdf' %}
                   <!-- Display PDF in iframe -->
-                  <iframe src="{{ information.jamb_file }}" width="100%" height="600px"></iframe>
+                  <embed src="{{ information.jamb_file }}" type="application/pdf" width="100%" height="600px">
+                  <p>Your browser does not support PDF viewing. 
+                    <a href="{{ information.jamb_file }}" target="_blank">Click here to view the file</a>.
+                  </p>
+
               {% endif %}
 
               <!-- Download button (works for both) -->
@@ -75,7 +83,11 @@
                   <img src="{{ information.transcript }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
               {% elif ext == 'pdf' %}
                   <!-- Display PDF in iframe -->
-                  <iframe src="{{ information.transcript }}" width="100%" height="600px"></iframe>
+                  <embed src="{{ information.transcript }}" type="application/pdf" width="100%" height="600px">
+                  <p>Your browser does not support PDF viewing. 
+                    <a href="{{ information.jamb_file }}" target="_blank">Click here to view the file</a>.
+                  </p>
+
               {% endif %}
 
               <!-- Download button (works for both) -->
