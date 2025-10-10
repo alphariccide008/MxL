@@ -51,14 +51,14 @@
 
               {% if ext in ['jpg', 'jpeg', 'png'] %}
                   <!-- Display image -->
-                  <img src="/static/upload/{{ information.jamb_file }}" alt="jamb result" class="img-fluid" style="max-width: 200px;"><br>
+                  <img src="{{ information.jamb_file }}" alt="jamb result" class="img-fluid" style="max-width: 200px;"><br>
               {% elif ext == 'pdf' %}
                   <!-- Display PDF in iframe -->
-                  <iframe src="/static/upload/{{ information.jamb_file }}" width="100%" height="600px"></iframe>
+                  <iframe src="{{ information.jamb_file }}" width="100%" height="600px"></iframe>
               {% endif %}
 
               <!-- Download button (works for both) -->
-              <a href="/static/upload/{{ information.jamb_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download JAMB RESULT</a>
+              <a href="{{ information.jamb_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download JAMB RESULT</a>
               <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> View JAMB RESULT </button>
           {% endif %}
 
@@ -72,14 +72,14 @@
 
               {% if ext in ['jpg', 'jpeg', 'png',] %}
                   <!-- Display image -->
-                  <img src="/static/upload/{{ information.transcript }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
+                  <img src="{{ information.transcript }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
               {% elif ext == 'pdf' %}
                   <!-- Display PDF in iframe -->
-                  <iframe src="/static/upload/{{ information.transcript }}" width="100%" height="600px"></iframe>
+                  <iframe src="{{ information.transcript }}" width="100%" height="600px"></iframe>
               {% endif %}
 
               <!-- Download button (works for both) -->
-              <a href="/static/upload/{{ information.transcript }}" download class="btn btn-primary btn-sm mt-2">⬇ Download Transcript</a>
+              <a href="{{ information.transcript }}" download class="btn btn-primary btn-sm mt-2">⬇ Download Transcript</a>
               <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2"> View transcript </button>
           {% endif %}
 

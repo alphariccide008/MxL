@@ -1,45 +1,52 @@
-import random,string,os
-import json,requests
+import random, string, os
+import json, requests
 from functools import wraps
 
-from flask import render_template,request,abort,redirect,flash,make_response,session,url_for,jsonify
+from flask import render_template, request, abort, redirect, flash, make_response, session, url_for, jsonify
 from sqlalchemy.sql import text
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
-
-from pkg import app,csrf
-from pkg.models import db,User,Information
+from pkg import app, csrf
+from pkg.models import db, User, Information
 from pkg.forms import *
 
+import cloudinary
+import cloudinary.uploader
 
+# ✅ Cloudinary Configuration
+cloudinary.config(
+    cloud_name="djetqdl9e",           # your Cloudinary cloud name
+    api_key="574177562338279",        # your Cloudinary API key
+    api_secret="93ONTpDhLBvWcpxWz3dV6cenFC8",  # your Cloudinary API secret (use full secret)
+    secure=True
+)
 
-#This is a decoratoer to help check if there is a user logged in
+# ------------------------------------------------------------
+# Decorator to check if there is a user logged in
+# ------------------------------------------------------------
 def login_required(f):
     @wraps(f)
-    def login_check(*args,**kwargs):
-        if session.get('user')!=None:
-            return f(*args,**kwargs)
+    def login_check(*args, **kwargs):
+        if session.get('user') is not None:
+            return f(*args, **kwargs)
         else:
-            flash("Access denied ,Login", "danger")
+            flash("Access denied. Please login.", "danger")
             return redirect('/login')
-    return login_check 
+    return login_check
 
 
-def generate_string(howmany):#call this function as renerate_string(10)
-    x = random.sample(string.digits,howmany)
+def generate_string(howmany):
+    x = random.sample(string.digits, howmany)
     return ''.join(x)
 
 
-app.config["UPLOAD_FOLDER"] = "uploads"  # 🔹 save directly into "upload/"
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 ALLOWED_EXTENSIONS = {"pdf", "jpg", "jpeg", "png"}
-
-
 
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route("/")
 def home():
@@ -51,6 +58,9 @@ def scholarship():
     return render_template('users/index.html')
 
 
+# ------------------------------------------------------------
+# MAIN FORM ROUTE
+# ------------------------------------------------------------
 @app.route("/form", methods=["GET", "POST"])
 def form():
     if request.method == "POST":
@@ -87,152 +97,88 @@ def form():
         growth = request.form.get("growth")
         giving_back = request.form.get("giving")
 
-        # Handle File Uploads (save directly in "upload/")
-        ALLOWED_EXTENSIONS = {'jpg', 'png', 'pdf', 'jpeg'}
-
-        # Upload folder
-        UPLOAD_FOLDER = os.path.join("pkg", "static", "upload")
-        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
+        # --------------------------------------------------------
+        # ✅ Handle File Uploads — upload directly to Cloudinary
+        # --------------------------------------------------------
         filesobj = request.files.get('waec')
         filesobj1 = request.files.get('jamb')
         filesobj2 = request.files.get('transcript')
 
         if not filesobj or not filesobj1 or not filesobj2:
-            flash('Please upload all Images', category='error')
+            flash('Please upload all required files', category='error')
             return
 
-        filename = filesobj.filename
-        filename1 = filesobj1.filename
-        filename2 = filesobj2.filename
+        allowed_ext = {'jpg', 'jpeg', 'png', 'pdf'}
+        for f in [filesobj, filesobj1, filesobj2]:
+            if f.filename == '' or f.filename.rsplit('.', 1)[-1].lower() not in allowed_ext:
+                flash('Invalid or missing files', category='error')
+                return
 
-        if filename == '' or filename1 == '' or filename2 == '':
-            flash('Please upload both Images', category='error')
-            return
+        # ✅ Upload to Cloudinary
+        upload_waec = cloudinary.uploader.upload(filesobj, folder="scholarship_uploads", resource_type="auto")
+        upload_jamb = cloudinary.uploader.upload(filesobj1, folder="scholarship_uploads", resource_type="auto")
+        upload_transcript = cloudinary.uploader.upload(filesobj2, folder="scholarship_uploads", resource_type="auto")
 
-        # Extract extensions
-        ext = filename.rsplit('.', 1)[-1].lower()
-        ext1 = filename1.rsplit('.', 1)[-1].lower()
-        ext2 = filename2.rsplit('.', 1)[-1].lower()
+        waec_url = upload_waec["secure_url"]
+        jamb_url = upload_jamb["secure_url"]
+        transcript_url = upload_transcript["secure_url"]
 
-        # ✅ Correct validation
-        if ext in ALLOWED_EXTENSIONS and ext1 in ALLOWED_EXTENSIONS and ext2 in ALLOWED_EXTENSIONS:
-            # Generate unique + safe filenames
-            newname = f"{int(random.random()*10000000)}_{secure_filename(filename)}"
-            newname1 = f"{int(random.random()*10000000)}_{secure_filename(filename1)}"
-            newname2 = f"{int(random.random()*10000000)}_{secure_filename(filename2)}"
+        # ✅ Save info to database
+        new_info = Information(
+            financial=financial,
+            intelligence=intelligence,
+            grit=grit,
+            growth=growth,
+            giving_back=giving_back,
+            waec_file=waec_url,
+            jamb_file=jamb_url,
+            transcript=transcript_url,
+            user_id=new_user.id,
+        )
+        db.session.add(new_info)
+        db.session.commit()
 
-            # Full paths
-            save_path = os.path.join(UPLOAD_FOLDER, newname)
-            save_path1 = os.path.join(UPLOAD_FOLDER, newname1)
-            save_path2 = os.path.join(UPLOAD_FOLDER, newname2)
+        # ✅ Optional CSV backup
+        import csv
+        from datetime import datetime
+        BACKUP_FOLDER = "backups"
+        os.makedirs(BACKUP_FOLDER, exist_ok=True)
+        csv_file = os.path.join(BACKUP_FOLDER, "form_backup.csv")
+        file_exists = os.path.isfile(csv_file)
 
-            # Save files
-            filesobj.save(save_path)
-            filesobj1.save(save_path1)
-            filesobj2.save(save_path2)
-
-            # Save info
-            new_info = Information(
-                financial=financial,
-                intelligence=intelligence,
-                grit=grit,
-                growth=growth,
-                giving_back=giving_back,
-                waec_file=newname,
-                jamb_file=newname1,
-                transcript=newname2,
-                user_id=new_user.id,
-            )
-            db.session.add(new_info)
-            db.session.commit()
-
-            # ✅ CSV BACKUP SECTION (Added)
-            import csv
-            from datetime import datetime
-
-            BACKUP_FOLDER = "backups"
-            os.makedirs(BACKUP_FOLDER, exist_ok=True)
-            csv_file = os.path.join(BACKUP_FOLDER, "form_backup.csv")
-
-            file_exists = os.path.isfile(csv_file)
-
-            with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
-                writer = csv.writer(file)
-                # Add header if file is new
-                if not file_exists:
-                    writer.writerow([
-                        "timestamp", "user_id", "fullname", "email", "age", "level", "school", "phone", 
-                        "guardian", "occupation", "financial", "intelligence", "grit", "growth", 
-                        "giving_back", "waec_file", "jamb_file", "transcript"
-                    ])
+        with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            if not file_exists:
                 writer.writerow([
-                    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    new_user.id, fullname, email, age, level, school, phone, guardian, occupation,
-                    financial, intelligence, grit, growth, giving_back, newname, newname1, newname2
+                    "timestamp", "user_id", "fullname", "email", "age", "level", "school", "phone",
+                    "guardian", "occupation", "financial", "intelligence", "grit", "growth",
+                    "giving_back", "waec_file", "jamb_file", "transcript"
                 ])
-            # ✅ End of CSV append
+            writer.writerow([
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                new_user.id, fullname, email, age, level, school, phone, guardian, occupation,
+                financial, intelligence, grit, growth, giving_back, waec_url, jamb_url, transcript_url
+            ])
 
-            # Console log instead of return
-            print(f"✅ User created: {new_user.fullname} ({new_user.school})")
-            print(f"✅ Files: WAEC={filename}, JAMB={filename1} ,Transcript={filename2}")
-            print(f"✅ Files: Giving={giving_back}")
+        print(f"✅ User created: {new_user.fullname} ({new_user.school})")
+        print(f"✅ Uploaded Files: WAEC={waec_url}, JAMB={jamb_url}, TRANSCRIPT={transcript_url}")
 
-            return ("", 204)  # no page reload, frontend just continues
+        return ("", 204)
 
     return render_template('users/index.html')
 
 
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
+# ------------------------------------------------------------
+# ERROR HANDLERS
+# ------------------------------------------------------------
 @app.errorhandler(404)
 def error_page(errors):
     return render_template("users/error.html")
 
-
-
-# @app.after_request
-# def after_request(response):
-#     response.headers["cache-control"]="no-cache, no-store, must-revalidate"
-#     return response
-
-
-
-
-
 @app.errorhandler(500)
 def server_error_page(errors):
     return render_template("users/error.html")
- 
 
 @app.errorhandler(403)
-def forbbiden_page(errors):
+def forbidden_page(errors):
     return render_template("users/badrequest.html")
-
-
-
-
-
-
-
-
-
-
-
-
-
