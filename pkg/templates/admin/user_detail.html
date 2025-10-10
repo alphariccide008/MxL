@@ -31,14 +31,14 @@
 
               {% if ext in ['jpg', 'jpeg', 'png'] %}
                   <!-- Display image -->
-                  <img src="/static/upload/{{ information.waec_file }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
+                  <img src="{{ information.waec_file }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
               {% elif ext == 'pdf' %}
                   <!-- Display PDF in iframe -->
-                  <iframe src="/static/upload/{{ information.waec_file }}" width="100%" height="600px"></iframe>
+                  <iframe src="{{ information.waec_file }}" width="100%" height="600px"></iframe>
               {% endif %}
 
               <!-- Download button (works for both) -->
-              <a href="/static/upload/{{ information.waec_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download WAEC RESILT</a>
+              <a href="{{ information.waec_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download WAEC RESILT</a>
               <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1"> View transcript </button>
           {% endif %}
 
@@ -58,7 +58,7 @@
               {% endif %}
 
               <!-- Download button (works for both) -->
-              <a href="{{ information.jamb_file }}" download class="btn btn-primary btn-sm mt-2">⬇ Download JAMB RESULT</a>
+              
               <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> View JAMB RESULT </button>
           {% endif %}
 
@@ -79,7 +79,7 @@
               {% endif %}
 
               <!-- Download button (works for both) -->
-              <a href="{{ information.transcript }}" download class="btn btn-primary btn-sm mt-2">⬇ Download Transcript</a>
+              
               <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2"> View transcript </button>
           {% endif %}
 
@@ -126,16 +126,16 @@
           {% set ext = information.transcript.rsplit('.', 1)[-1].lower() %}
           
           {% if ext in ['jpg', 'jpeg', 'png', 'gif'] %}
-            <img src="/static/upload/{{ information.transcript }}" alt="Transcript" class="img-fluid" style="max-width: 100%; max-height: 800px;">
+            <img src="{{ information.transcript }}" alt="Transcript" class="img-fluid" style="max-width: 100%; max-height: 800px;">
           {% elif ext == 'pdf' %}
-            <iframe src="/static/upload/{{ information.transcript }}" width="100%" height="600px"></iframe>
+            <iframe src="{{ information.transcript }}" width="100%" height="600px"></iframe>
           {% endif %}
         {% else %}
           <p>No transcript available.</p>
         {% endif %}
       </div>
       <div class="modal-footer">
-        <a href="/static/upload/{{ information.transcript }}" download class="btn btn-primary">⬇ Download Transcript</a>
+        
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
@@ -158,16 +158,16 @@
           {% set ext = information.jamb_file.rsplit('.', 1)[-1].lower() %}
           
           {% if ext in ['jpg', 'jpeg', 'png', 'gif'] %}
-            <img src="/static/upload/{{ information.jamb_file }}" alt="jamb_file" class="img-fluid" style="max-width: 100%; max-height: 800px;">
+            <img src="{{ information.jamb_file }}" alt="jamb_file" class="img-fluid" style="max-width: 100%; max-height: 800px;">
           {% elif ext == 'pdf' %}
-            <iframe src="/static/upload/{{ information.jamb_file }}" width="100%" height="600px"></iframe>
+            <iframe src="{{ information.jamb_file }}" width="100%" height="600px"></iframe>
           {% endif %}
         {% else %}
           <p>No jamb file available.</p>
         {% endif %}
       </div>
       <div class="modal-footer">
-        <a href="/static/upload/{{ information.jamb_file }}" download class="btn btn-primary">⬇ Download Jamb Result</a>
+       
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
@@ -191,16 +191,16 @@
           {% set ext = information.waec_file.rsplit('.', 1)[-1].lower() %}
           
           {% if ext in ['jpg', 'jpeg', 'png', 'gif'] %}
-            <img src="/static/upload/{{ information.waec_file }}" alt="Transcript" class="img-fluid" style="max-width: 100%; max-height: 800px;">
+            <img src="{{ information.waec_file }}" alt="Transcript" class="img-fluid" style="max-width: 100%; max-height: 800px;">
           {% elif ext == 'pdf' %}
-            <iframe src="/static/upload/{{ information.waec_file }}" width="100%" height="600px"></iframe>
+            <iframe src="{{ information.waec_file }}" width="100%" height="600px"></iframe>
           {% endif %}
         {% else %}
           <p>No waec_file available.</p>
         {% endif %}
       </div>
       <div class="modal-footer">
-        <a href="/static/upload/{{ information.waec_file }}" download class="btn btn-primary">⬇ Download WAEC RESULT</a>
+        
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
