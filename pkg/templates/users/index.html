@@ -174,7 +174,7 @@
     <!-- Main Content -->
     <div class="relative md:pt-[20%] z-10 md:ml-[18%] md:pb-[3%]">
       <span class="inline-flex mt-8 items-center gap-2 bg-gray-700 text-sm text-gray-200 md:px-4 py-1.5 rounded-full mb-6 ">
-        ⏰ Applications close 16th October 2025
+        ⏰ Applications closed
       </span>
 
       <h1 class="md:text-[52px] text-[42px] text-white font-bold leading-tight mb-4">
@@ -609,7 +609,7 @@
     <!-- LEFT SIDE -->
     <div class="text-white space-y-6">
       <span class="bg-gray-800 text-sm px-4 py-2 rounded-full inline-block">
-        ⏳ Applications close 16th October 2025
+        ⏳ Applications closed
       </span>
       <h1 class="text-5xl font-bold leading-tight">
         Ready to Build <br/>
@@ -622,114 +622,34 @@
 
     <!-- RIGHT SIDE -->
     <div class="md:mt-[15%] md:px-[10%] text-[14px]" id="apply">
-      <form id="multiStepForm" method="post" enctype="multipart/form-data" action="/form" class="bg-white rounded-2xl text-sm shadow-lg w-full max-w-lg p-6 space-y-6"> <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> 
+      <form id="multiStepForm" method="post" enctype="multipart/form-data" action="#" class="bg-white rounded-2xl text-sm shadow-lg w-full max-w-lg p-6 space-y-6"> <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"> 
         <!-- Progress Bar --> 
          <div class="flex justify-between mb-4"> 
           <div class="h-1 flex-1 bg-gray-200 mx-1 rounded-full"> 
             <div id="progress" class="h-1 bg-blue-500 rounded-full w-1/2"></div> </div> </div> 
             <!-- Step 1 --> 
-             <div class="step"> 
-              <h2 class="text-xl font-bold mb-2">Personal & School Info</h2> 
-              <p class="text-gray-500 mb-4">We just need the basics about you:</p> 
-              <input type="text" name="fullname" placeholder="Full name" class="input-field md:text-[10px] w-full p-3 border rounded-lg mb-3">
-              <input type="text" name="email" placeholder="Email" class="input-field md:text-[10px] w-full p-3 border rounded-lg mb-3">
-              <div class="grid grid-cols-2 mb-2 gap-3"> 
-                
-                <select name="age" class="input-field mb-2 md:text-[10px] w-full p-3 border rounded-lg">    
-                  <option value="" >Select Age</option> 
-                  <option value="15">15</option>
-                  <option value="16">16</option>
-                  <option value="18">17</option> 
-                  <option value="18">18</option> 
-                  <option value="19">19</option> 
-                  <option value="20">20</option> 
-                  <option value="21">21</option> 
-                  <option value="22">22</option> 
-                  <option value="23">23</option> 
-                  <option value="25">25</option> 
-                  
-                  
-                </select>
-                <select name="level" class="input-field mb-2 md:text-[10px] w-full p-3 border rounded-lg">    
-                  <option value="" >Select Level</option> 
-                  <option value="200">200</option> 
-                </select>
-              </div> 
-            <div class=" mb-2 gap-3"> 
-              
-              <select name="school" class="input-field mb-2 md:text-[10px] w-full p-3 border rounded-lg">    
-              <option value="" >Select school</option> 
-              <option value="Obafemi Awolowo university">Obafemi Awolowo university</option> 
-              <option value="University of Lagos">University of Lagos</option>
-              <option value="University of Calabar">University of Calabar</option>
-              <option value="University of Abuja">University of Abuja</option>
-              <option value="University of Maiduguri">University of Maiduguri</option>
-              <option value="University of Nigeria">University of Nigeria</option>
-              <option value="Ahmadu Bello University">Ahmadu Bello University , Zaria</option>
-              </select>
-            </div> 
-           
-            <input type="tel" name="phone" placeholder="Phone number" class="input-field w-full p-3 border md:text-[10px]  rounded-lg mb-3"> 
-            <input type="text" name="guardian" placeholder="Guardian/Parent’s name" class="input-field text-[10px] w-full p-3 border rounded-lg mb-3"> 
-            <input type="text" name="occupation" placeholder="Guardian/Parent’s Occupation" class="input-field  md:text-[10px] w-full p-3 border rounded-lg mb-3"> 
-            <div class="flex mt-3"> 
-              <label class="block  mb-3 w-1/2">WAEC Results </label> 
-              <input type="file" name="waec" class="mt-1 file-field md:text-[10px] w-full"> 
-            </div> 
-            <div class="flex mt-3"> 
-              <label class="block file-field mb-3 w-1/2">JAMB Results</label> 
-              <input type="file" name="jamb" class="mt-1 w-full md:text-[10px]"> 
-            </div>
-            <div class="flex mt-3"> 
-              <label class="block file-field mb-3 w-1/2">Transcript</label> 
-              <input type="file" name="transcript" class="mt-1 w-full md:text-[10px]"> 
-            </div> 
-          </div> 
+             
           <!-- Step 2 --> 
-           <div class="step hidden"> 
-            <h2 class="text-xl font-bold mb-2">Financial Background</h2> 
-            <p class="text-gray-500 mb-4">Be real with us about the money side...</p> 
-            <textarea name="financial" rows="4" placeholder="Share your main challenge." class="input-field w-full p-3 border rounded-lg"></textarea> 
-          </div> 
+          
           <!-- Step 3 --> 
-           <div class="step hidden"> 
-            <h2 class="text-xl font-bold mb-2">Intelligence & Capability</h2> 
-            <p class="text-gray-500 mb-4">Tell us about something tough you figured out on your own.</p> 
-            <textarea name="intelligence" rows="4" placeholder="Share a skill or subject you figured out solo." class="input-field w-full p-3 border rounded-lg"></textarea> 
-          </div> 
+           
           <!-- Step 4 --> 
-           <div class="step hidden"> 
-            <h2 class="text-xl font-bold mb-2">Grit & Resilience</h2> 
-            <p class="text-gray-500 mb-4">What’s the hardest thing you kept doing over time?</p> 
-            <textarea name="grit" rows="4" placeholder="Share a habit you stuck with." class="input-field w-full p-3 border rounded-lg"></textarea> 
-          </div> 
+          
           <!-- Step 5 --> 
-           <div class="step hidden"> 
-            <h2 class="text-xl font-bold mb-2">Growth Mindset</h2> 
-            <p class="text-gray-500 mb-4">Think about the last year. What skill did you get better at?</p> 
-            <textarea name="growth" rows="4" placeholder="Share a skill you’ve improved." class="input-field w-full p-3 border rounded-lg"></textarea> 
-          </div> 
-          <div class="step hidden"> 
-            <h2 class="text-xl font-bold mb-2">Giving Back</h2> 
-            <p class="text-gray-500 mb-4">If this scholarship helps you reach your goals, how would you use it to give back or support others? </p> 
-            <p class="text-gray-500 mb-4">And finally, what would receiving this scholarship mean for your future?</p> 
-            <textarea name="giving" rows="4" placeholder="E.g., mentor others, support family, build community projects… and share what this scholarship would change for you." class="input-field w-full p-3 border rounded-lg"></textarea> 
-          </div> 
+           
+          
           <!-- Step 6 (Final Success) --> 
            <div class="step hidden text-center" id="successStep"> 
             <div class="flex justify-center mb-4"> <span class="text-blue-600 text-5xl">
               <img src="/static/img/submit.png" alt=""></span> 
             </div> 
-            <h2 class="text-xl font-bold mb-2">Application Submitted!</h2> 
+           
             <p class="text-gray-500">Thank you for applying to the Future Builders STEM Scholarship.</p> 
-            <p class="text-gray-500 mb-4">Stay tuned — and keep building the future.</p> <div class="bg-gray-100 p-3 rounded-lg"> Final awardees will be announced after the deadline (16th October 2025) 
+            <p class="text-gray-500 mb-4">Stay tuned — and keep building the future.</p> <div class="bg-gray-100 p-3 rounded-lg"> Application Closed 
             </div> 
           </div> 
           <!-- Navigation Buttons --> 
-           <div class="flex justify-between"> 
-            <button type="button" id="prevBtn" class="hidden px-4 py-2 rounded-lg bg-gray-100">Back</button> 
-            <button type="submit" id="nextBtn" class="px-4 py-2 justify-end rounded-full bg-[#0a1639] text-white">Next</button> 
-          </div> 
+           
         </form>
     </div>
   </div>
@@ -775,103 +695,7 @@
 
         // form
  
-const steps = document.querySelectorAll(".step");
-const nextBtn = document.getElementById("nextBtn");
-const prevBtn = document.getElementById("prevBtn");
-const progress = document.getElementById("progress");
-let currentStep = 0;
 
-function showStep(index) {
-  steps.forEach((step, i) => {
-    step.classList.toggle("hidden", i !== index);
-  });
-
-  // Hide back button on first step
-  prevBtn.classList.toggle("hidden", index === 0);
-
-  // Hide both buttons when showing success step (step 6)
-  if (index === steps.length - 1) {
-    nextBtn.classList.add("hidden");
-    prevBtn.classList.add("hidden");
-  } else {
-    nextBtn.classList.remove("hidden");
-  }
-
-  // Change button text for the second-to-last step
-  if (index === steps.length - 2) {
-    nextBtn.textContent = "Submit Application";
-    nextBtn.type = "submit";
-  } else {
-    nextBtn.textContent = "Next";
-    nextBtn.type = "button";
-  }
-
-  progress.style.width = `${((index + 1) / (steps.length - 1)) * 100}%`;
-}
-
-function validateStep(index) {
-  let valid = true;
-  const inputs = steps[index].querySelectorAll(".input-field, textarea, input[type='file']");
-
-  inputs.forEach(input => {
-    if (input.type === "file") {
-      if (!input.files || input.files.length === 0) {
-        input.classList.add("error1");
-        valid = false;
-      } else {
-        input.classList.remove("error1");
-      }
-    } else {
-      if (!input.value.trim()) {
-        input.classList.add("error");
-        valid = false;
-      } else {
-        input.classList.remove("error");
-      }
-    }
-  });
-
-  return valid;
-}
-
-nextBtn.addEventListener("click", () => {
-  if (!validateStep(currentStep)) return;
-
-  // Add 8-second delay before showing Step 6 (the final success step)
-  if (currentStep === steps.length - 3) { // right before last step
-    nextBtn.disabled = true;
-    nextBtn.textContent = "Processing...";
-    setTimeout(() => {
-      currentStep++;
-      showStep(currentStep);
-      nextBtn.disabled = false;
-    }, 1000); // 8-second delay
-  } 
-  else if (currentStep < steps.length - 2  ) {
-    currentStep++;
-    showStep(currentStep);
-  } 
-  else {
-    // Final step: show success screen
-    steps.forEach(step => step.classList.add("hidden"));
-    document.getElementById("successStep").classList.remove("hidden");
-    nextBtn.classList.add("hidden");
-    prevBtn.classList.add("hidden");
-  }
-});
-
-prevBtn.addEventListener("click", () => {
-  if (currentStep > 0) {
-    currentStep--;
-    showStep(currentStep);
-  }
-});
-
-document.getElementById("multiStepForm").addEventListener("submit", () => {
-  console.log("Submitting full form data...");
-});
-
-showStep(currentStep);
 
 
 
