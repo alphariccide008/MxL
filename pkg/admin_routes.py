@@ -230,42 +230,42 @@ def decline_user(user_id):
         user.approved = 'decline'
         db.session.commit()
 
-        try:
-            msg = Message(
-                subject="Scholarship Application Update - ",
-                recipients=[user.email]
-            )
-            msg.html = f"""
-            <html>
-                <body style="font-family: Arial, sans-serif; background-color:#f4f4f4; padding:20px;">
-                    <div style="max-width:700px; margin:auto; background:#fff; padding:20px; border-radius:8px; ">
+        # try:
+        #     msg = Message(
+        #         subject="Scholarship Application Update - ",
+        #         recipients=[user.email]
+        #     )
+        #     msg.html = f"""
+        #     <html>
+        #         <body style="font-family: Arial, sans-serif; background-color:#f4f4f4; padding:20px;">
+        #             <div style="max-width:700px; margin:auto; background:#fff; padding:20px; border-radius:8px; ">
                     
-                        <h2 style='color:#000000;'>Dear {user.fullname},</h2>
-                        <b>
+        #                 <h2 style='color:#000000;'>Dear {user.fullname},</h2>
+        #                 <b>
 
-                        <p>Thank you for taking the time to apply for the Tosin Eniolorunda Future Builders STEM Scholarship. We were deeply inspired by your story, your aspirations, and the passion you poured into your application.</p>
+        #                 <p>Thank you for taking the time to apply for the Tosin Eniolorunda Future Builders STEM Scholarship. We were deeply inspired by your story, your aspirations, and the passion you poured into your application.</p>
 
-                        <p>This year, we received an overwhelming number of applications from brilliant and driven individuals like you. After careful consideration, we regret to inform you that you were not selected for this cycle. Please know that this decision was not a reflection of your potential, but rather the limited number of awards available.</p>
+        #                 <p>This year, we received an overwhelming number of applications from brilliant and driven individuals like you. After careful consideration, we regret to inform you that you were not selected for this cycle. Please know that this decision was not a reflection of your potential, but rather the limited number of awards available.</p>
 
-                        <p>We want you to remember your dreams remain valid, your journey is important, and the resilience you’ve shown in reaching this stage is remarkable. Many great leaders and changemakers have faced setbacks along the way, but what set them apart was their ability to keep moving forward.</p>
+        #                 <p>We want you to remember your dreams remain valid, your journey is important, and the resilience you’ve shown in reaching this stage is remarkable. Many great leaders and changemakers have faced setbacks along the way, but what set them apart was their ability to keep moving forward.</p>
 
-                        <p>We truly believe in your future, and we encourage you to continue pursuing opportunities that bring you closer to your goals.
+        #                 <p>We truly believe in your future, and we encourage you to continue pursuing opportunities that bring you closer to your goals.
 
-                        .</p>
-                        <p>Stay Winning,<br>
-                        <b>Tosin Eniolorunda Foundation</b></p>
+        #                 .</p>
+        #                 <p>Stay Winning,<br>
+        #                 <b>Tosin Eniolorunda Foundation</b></p>
                         
                         
-                    </div>
-                </body>
-            </html>
-            """
+        #             </div>
+        #         </body>
+        #     </html>
+        #     """
 
-            mail.send(msg)
-            print(f"❌ User {user.fullname} was declined. Email sent to {user.email}")
+        #     mail.send(msg)
+        #     print(f"❌ User {user.fullname} was declined. Email sent to {user.email}")
 
-        except Exception as e:
-            print(f"⚠️ Decline succeeded but email failed to send: {str(e)}")
+        # except Exception as e:
+        #     print(f"⚠️ Decline succeeded but email failed to send: {str(e)}")
 
         return redirect(url_for('all_users'))
 

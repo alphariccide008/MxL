@@ -7,100 +7,84 @@
         <h5 class="mb-3">Personal Info</h5>
         <ul class="list-group mb-4">
             <li class="list-group-item"><b>Full Name:</b> {{ user.fullname }}</li>
-            <li class="list-group-item"><b>Age:</b> {{ user.age }}</li>
-            <li class="list-group-item"><b>Level:</b> {{ user.level }} Level</li>
-            <li class="list-group-item"><b>School:</b> {{ user.school }}</li>
+            <li class="list-group-item"><b>Gender:</b> {{ user.gender }}</li>
+            <li class="list-group-item"><b>DOB:</b> {{ user.dob }}</li>
             <li class="list-group-item"><b>Phone:</b> {{ user.phone }}</li>
-            <li class="list-group-item"><b>Email:</b> {{ user.email }}</li>
-            <li class="list-group-item"><b>Guardian:</b> {{ user.guardian }}</li>
-            <li class="list-group-item"><b>Occupation:</b> {{ user.occupation }}</li>
+            <li class="list-group-item"><b>email:</b> {{ user.email }}</li>
+            <li class="list-group-item"><b>State:</b> {{ user.state }}</li>
+            <li class="list-group-item"><b>Geo:</b> {{ user.geo }}</li>
+            <li class="list-group-item"><b>Media:</b> {{ user.media }}</li>
+            <li class="list-group-item"><b>Type:</b> {{ user.type }}</li>
+            <li class="list-group-item"><b>Role:</b> {{ user.role }}</li>
+            <li class="list-group-item"><b>Journalism:</b> {{ user.journalism }}</li>
+            <li class="list-group-item"><b>Finance:</b> {{ user.finance }}</li>
+            <li class="list-group-item"><b>Supervisor:</b> {{ user.supervisor }}</li>
         </ul>
 
                     {% if information %}
     <h5 class="mb-3">Submitted Information</h5>
     <ul class="list-group">
-        <li class="list-group-item"><b>Financial Background:</b> {{ information.financial }}</li>
-        <li class="list-group-item"><b>Intelligence:</b> {{ information.intelligence }}</li>
-        <li class="list-group-item"><b>Grit:</b> {{ information.grit }}</li>
-        <li class="list-group-item"><b>Growth:</b> {{ information.growth }}</li>
-        <li class="list-group-item"><b>Giving Back:</b> {{ information.giving_back }}</li>
+        <li class="list-group-item"><b>Leadership:</b> {{ information.leadership }}</li>
+        <li class="list-group-item"><b>Leadership Description:</b> {{ information.leadership_desc }}</li>
+        <li class="list-group-item"><b>Motivation:</b> {{ information.motivation }}</li>
+        <li class="list-group-item"><b>Knowledge Use:</b> {{ information.knowledge_use }}</li>
+        <li class="list-group-item"><b>Commitment:</b> {{ information.commitment }}</li>
+        <li class="list-group-item"><b>Signature:</b> {{ information.signature }}</li>
+        <li class="list-group-item"><b>Signature Date:</b> {{ information.sign_date }}</li>
 
-        <li class="list-group-item"><b>WAEC RESULT:</b><br>
-            {% if information.waec_file %}
-              {% set ext = information.waec_file.rsplit('.', 1)[-1].lower() %}
+        <li class="list-group-item"><b>Article 1:</b><br>
+            {% if information.article1 %}
+              {% set ext = information.article1.rsplit('.', 1)[-1].lower() %}
 
               {% if ext in ['jpg', 'jpeg', 'png'] %}
                   <!-- Display image -->
-                  <img src="{{ information.waec_file }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
+                  <img src="{{ information.article1 }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
               {% elif ext == 'pdf' %}
                   <!-- Display PDF in iframe -->
-                  <embed src="{{ information.jamb_file }}" type="application/pdf" width="100%" height="600px">
+                  <embed src="{{ information.article1 }}" type="application/pdf" width="100%" height="600px">
                   
 
               {% endif %}
 
               <!-- Download button (works for both) -->
               
-              <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1"> View Waec </button>
+              <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1"> View Article 2 </button>
           {% endif %}
 
         </li>
 
-        <li class="list-group-item"><b>JAMB RESULT:</b><br>
+        <li class="list-group-item"><b>Article 2:</b><br>
             
-            {% if information.jamb_file %}
-              {% set ext = information.jamb_file.rsplit('.', 1)[-1].lower() %}
+            {% if information.article2 %}
+              {% set ext = information.article2.rsplit('.', 1)[-1].lower() %}
 
               {% if ext in ['jpg', 'jpeg', 'png'] %}
                   <!-- Display image -->
-                  <img src="{{ information.jamb_file }}" alt="jamb result" class="img-fluid" style="max-width: 200px;"><br>
+                  <img src="{{ information.article2 }}" alt="Article result" class="img-fluid" style="max-width: 200px;"><br>
               {% elif ext == 'pdf' %}
                   <!-- Display PDF in iframe -->
-                  <embed src="{{ information.jamb_file }}" type="application/pdf" width="100%" height="600px">
+                  <embed src="{{ information.article2 }}" type="application/pdf" width="100%" height="600px">
                  
 
               {% endif %}
 
               <!-- Download button (works for both) -->
               
-              <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"> View JAMB RESULT </button>
+              <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">  View Article 1 </button>
           {% endif %}
 
             
         </li>
 
-        <li class="list-group-item"><b>TRANSCRIPT:</b><br>
-            
-           {% if information.transcript %}
-              {% set ext = information.transcript.rsplit('.', 1)[-1].lower() %}
-
-              {% if ext in ['jpg', 'jpeg', 'png',] %}
-                  <!-- Display image -->
-                  <img src="{{ information.transcript }}" alt="Transcript" class="img-fluid" style="max-width: 200px;"><br>
-              {% elif ext == 'pdf' %}
-                  <!-- Display PDF in iframe -->
-                  <embed src="{{ information.transcript }}" type="application/pdf" width="100%" height="600px">
-                  
-
-              {% endif %}
-
-              <!-- Download button (works for both) -->
-              
-              <button type="button" class="btn btn-sm mt-2 btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2"> View transcript </button>
-          {% endif %}
-
-
-        </li>
+        
         
         
     </ul>
             {% endif %}
-            {% if user.approved == "approved" or user.approved == "decline" %}
+            
 
-            <div>
-                <span class="p-2 bg-success text-white"> This Applicant has been reviewed</span>
-            </div>
-            {% else %}
+            
+            
                <div style="display: flex;">
                  <div class="mt-4">
                     <a href="{{ url_for('approve_user', user_id=user.id) }}" class="btn text-white bg-success text-sm">Approve Applicant</a>
@@ -109,7 +93,7 @@
                     <a href="{{ url_for('decline_user', user_id=user.id) }}" class="btn text-white bg-danger text-sm">Decline Applicant</a>
                 </div>
                </div>
-            {% endif %}
+           
 
 
 
@@ -124,7 +108,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Transcript Preview</h5>
+        <h5 class="modal-title" id="exampleModalLabel">article1 Preview</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -156,20 +140,20 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">JAMB RESULT Preview</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Article 2 Preview</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        {% if information.jamb_file %}
-          {% set ext = information.jamb_file.rsplit('.', 1)[-1].lower() %}
+        {% if information.article2 %}
+          {% set ext = information.article2.rsplit('.', 1)[-1].lower() %}
           
           {% if ext in ['jpg', 'jpeg', 'png', 'gif'] %}
-            <img src="{{ information.jamb_file }}" alt="jamb_file" class="img-fluid" style="max-width: 100%; max-height: 800px;">
+            <img src="{{ information.article2 }}" alt="article2" class="img-fluid" style="max-width: 100%; max-height: 800px;">
           {% elif ext == 'pdf' %}
-            <embed src="{{ information.jamb_file }}" width="100%" height="600px">
+            <embed src="{{ information.article2 }}" width="100%" height="600px">
           {% endif %}
         {% else %}
-          <p>No jamb file available.</p>
+          <p>No Article available.</p>
         {% endif %}
       </div>
       <div class="modal-footer">
@@ -189,20 +173,20 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">WAEC RESULT Preview</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Article 1 Preview</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        {% if information.waec_file %}
-          {% set ext = information.waec_file.rsplit('.', 1)[-1].lower() %}
+        {% if information.article1 %}
+          {% set ext = information.article1.rsplit('.', 1)[-1].lower() %}
           
           {% if ext in ['jpg', 'jpeg', 'png', 'gif'] %}
-            <img src="{{ information.waec_file }}" alt="Transcript" class="img-fluid" style="max-width: 100%; max-height: 800px;">
+            <img src="{{ information.article1 }}" alt="Transcript" class="img-fluid" style="max-width: 100%; max-height: 800px;">
           {% elif ext == 'pdf' %}
-            <embed src="{{ information.waec_file }}" width="100%" height="600px">
+            <embed src="{{ information.article1 }}" width="100%" height="600px">
           {% endif %}
         {% else %}
-          <p>No waec_file available.</p>
+          <p>No Article available.</p>
         {% endif %}
       </div>
       <div class="modal-footer">

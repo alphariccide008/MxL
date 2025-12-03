@@ -5,7 +5,7 @@ ADMIN_EMAIL = getenv("ADMIN_EMAIL", "godspowerlawrence008@gmail.com")
 USER_PROFILE_PATH = "pkg/static/profiles/"
 
 # Use environment variable for database URL, fallback to PostgreSQL default
-DATABASE_URL = getenv("DATABASE_URL", "postgresql://moniepoint_user:fywokEqHfMiMguQwq2ynmB3nSZ5tdQlK@dpg-d3jnsrl6ubrc73d02nsg-a.oregon-postgres.render.com:5432/moniepoint")
+DATABASE_URL = getenv("DATABASE_URL", "postgresql://moniepointjournalism_5l5w_user:R0eDnbOKKgnYtelOLFdHRT76Tz6gGhnn@dpg-d4n9ep6uk2gs739ldcd0-a.oregon-postgres.render.com/moniepointjournalism_5l5w")
 SQLALCHEMY_DATABASE_URI = DATABASE_URL
 
 # Mail configuration

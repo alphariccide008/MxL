@@ -10,13 +10,13 @@
                 <tr>
                     <th>S/N</th>
                     <th>Full Name</th>
-                    <th>Age</th>
-                    <th>Level</th>
-                    <th>School</th>
-                    <th>Phone Number</th>
-                    <th>Guardian Name</th>
-                    <th>Guardian/Parent's Occupation</th>
-                    <th>Action</th>
+                    <th>Gender/th>
+                    <th>DOB</th>
+                    <th>phone</th>
+                    <th>Email </th>
+                    <th>Role</th>
+                    <th>Media</th>
+                    <th>Type</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,12 +30,13 @@
                         {% endif %}
                     </td>
 
-                    <td>{{ user.age }}</td>
-                    <td>{{ user.level }} Level</td>
-                    <td>{{ user.school }}</td>
+                    <td>{{ user.gender }}</td>
+                    <td>{{ user.dob }} </td>
                     <td>{{ user.phone }}</td>
-                    <td>{{ user.guardian }}</td>
-                    <td>{{ user.occupation }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>{{ user.media }}</td>
+                    <td>{{ user.type }}</td>
                     <td>
                         <a href="{{ url_for('user_detail', user_id=user.id) }}" class="btn text-white bg-success text-sm">View More</a>
                     </td>

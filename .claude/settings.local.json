@@ -12,7 +12,19 @@
       "Bash(rm:*)",
       "Bash(docker build:*)",
       "Bash(docker:*)",
-      "Bash(echo \"You can also check via Render.com dashboard:\n\n1. Go to https://dashboard.render.com/\n2. Log into your account\n3. Find your PostgreSQL database: ''moniepoint'' (dpg-d3jnsrl6ubrc73d02nsg-a)\n4. Click on it\n5. Go to ''Shell'' or ''Connect'' tab\n6. Use the built-in psql shell to run queries\n\nExample queries you can run there:\n  \\dt                                    -- List all tables\n  SELECT * FROM admin;                   -- Show admin users\n  SELECT * FROM \"\"user\"\";                  -- Show all users\n  SELECT COUNT(*) FROM \"\"user\"\";          -- Count users\n\")"
+      "Bash(echo \"You can also check via Render.com dashboard:\n\n1. Go to https://dashboard.render.com/\n2. Log into your account\n3. Find your PostgreSQL database: ''moniepoint'' (dpg-d3jnsrl6ubrc73d02nsg-a)\n4. Click on it\n5. Go to ''Shell'' or ''Connect'' tab\n6. Use the built-in psql shell to run queries\n\nExample queries you can run there:\n  \\dt                                    -- List all tables\n  SELECT * FROM admin;                   -- Show admin users\n  SELECT * FROM \"\"user\"\";                  -- Show all users\n  SELECT COUNT(*) FROM \"\"user\"\";          -- Count users\n\")",
+      "Bash(python:*)",
+      "Bash(appScriptsactivate)",
+      "Bash(pip install:*)",
+      "Bash(app/Scripts/pip install -r requirements.txt)",
+      "Bash(app/Scripts/python.exe -m pip:*)",
+      "Bash(app/Scripts/pip install --only-binary psycopg2-binary -r requirements.txt)",
+      "Bash(app/Scripts/flask db:*)",
+      "Bash(app/Scripts/pip install --upgrade SQLAlchemy==2.0.36)",
+      "Bash(app/Scripts/pip install --upgrade typing_extensions==4.12.2)",
+      "Bash(app/Scripts/python starter.py)",
+      "Bash(timeout:*)",
+      "Bash(app/Scripts/python test_db_connection.py)"
     ],
     "deny": [],
     "ask": []

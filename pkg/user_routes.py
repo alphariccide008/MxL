@@ -64,108 +64,118 @@ def scholarship():
 @app.route("/form", methods=["GET", "POST"])
 def form():
     if request.method == "POST":
-        # Step 1: User details
-        fullname = request.form.get("fullname")
-        email = request.form.get("email")
-        age = request.form.get("age")
-        level = request.form.get("level")
-        school = request.form.get("school")
-        phone = request.form.get("phone")
-        guardian = request.form.get("guardian")
-        occupation = request.form.get("occupation")
+        try:
+            # -------------------------
+            # STEP 1 – USER DETAILS
+            # -------------------------
+            fullname = request.form.get("fullname")
+            gender = request.form.get("gender")
+            dob = request.form.get("dob")
+            phone = request.form.get("phone")
+            email = request.form.get("email")
+            state = request.form.get("state")
+            geo = request.form.get("geo")
+            type = request.form.get("type")
+            media = request.form.get("media")
+            role = request.form.get("role")
+            journalism = request.form.get("journalism")
+            finance = request.form.get("finance")
+            supervisor = request.form.get("supervisor")
 
-        # Save user
-        new_user = User(
-            fullname=fullname,
-            email=email,
-            age=age,
-            level=level,
-            school=school,
-            phone=phone,
-            guardian=guardian,
-            occupation=occupation,
-            status='new',
-            approved='pending'
-        )
-        db.session.add(new_user)
-        db.session.commit()
+            # Create User
+            new_user = User(
+                fullname=fullname,
+                gender=gender,
+                dob=dob,
+                phone=phone,
+                email=email,
+                state=state,
+                geo=geo,
+                media=media,
+                role=role,
+                type=type,
+                finance=finance,
+                supervisor=supervisor,
+                journalism=journalism,
+                approved='pending',
+                status ='new'
+            )
+            db.session.add(new_user)
+            db.session.flush()  # Get the ID without committing yet
 
-        # Step 2–5: Information
-        financial = request.form.get("financial")
-        intelligence = request.form.get("intelligence")
-        grit = request.form.get("grit")
-        growth = request.form.get("growth")
-        giving_back = request.form.get("giving")
+            # -------------------------
+            # STEP 2 – INFORMATION
+            # -------------------------
+            leadership = request.form.get("leadership")
+            leadership_desc = request.form.get("leadership_desc")
+            motivation = request.form.get("motivation")
+            knowledge_use = request.form.get("knowledge_use")
+            commitment = request.form.get("commitment")
+            signature = request.form.get("signature")
+            sign_date = request.form.get("sign_date")
 
-        # --------------------------------------------------------
-        # ✅ Handle File Uploads — upload directly to Cloudinary
-        # --------------------------------------------------------
-        filesobj = request.files.get('waec')
-        filesobj1 = request.files.get('jamb')
-        filesobj2 = request.files.get('transcript')
+            # -------------------------
+            # FILE UPLOADS (Cloudinary)
+            # -------------------------
+            article1 = request.files.get("article1")
+            article2 = request.files.get("article2")
 
-        if not filesobj or not filesobj1 or not filesobj2:
-            flash('Please upload all required files', category='error')
-            return
+            if not article1 or not article2:
+                db.session.rollback()
+                flash("Both article files are required", "error")
+                return redirect(url_for("scholarship"))
 
-        allowed_ext = {'jpg', 'jpeg', 'png', 'pdf'}
-        for f in [filesobj, filesobj1, filesobj2]:
-            if f.filename == '' or f.filename.rsplit('.', 1)[-1].lower() not in allowed_ext:
-                flash('Invalid or missing files', category='error')
-                return
+            allowed_ext = {"jpg", "jpeg", "png", "pdf"}
+            for f in [article1, article2]:
+                if f.filename == "" or f.filename.rsplit(".", 1)[1].lower() not in allowed_ext:
+                    db.session.rollback()
+                    flash("Invalid image/document upload", "error")
+                    return redirect(url_for("scholarship"))
 
-        # ✅ Upload to Cloudinary
-        upload_waec = cloudinary.uploader.upload(filesobj, folder="scholarship_uploads", resource_type="auto")
-        upload_jamb = cloudinary.uploader.upload(filesobj1, folder="scholarship_uploads", resource_type="auto")
-        upload_transcript = cloudinary.uploader.upload(filesobj2, folder="scholarship_uploads", resource_type="auto")
+            # Upload to Cloudinary
+            upload_article1 = cloudinary.uploader.upload(
+                article1, folder="scholarship_uploads", resource_type="auto"
+            )
+            upload_article2 = cloudinary.uploader.upload(
+                article2, folder="scholarship_uploads", resource_type="auto"
+            )
 
-        waec_url = upload_waec["secure_url"]
-        jamb_url = upload_jamb["secure_url"]
-        transcript_url = upload_transcript["secure_url"]
+            article1_url = upload_article1["secure_url"]
+            article2_url = upload_article2["secure_url"]
 
-        # ✅ Save info to database
-        new_info = Information(
-            financial=financial,
-            intelligence=intelligence,
-            grit=grit,
-            growth=growth,
-            giving_back=giving_back,
-            waec_file=waec_url,
-            jamb_file=jamb_url,
-            transcript=transcript_url,
-            user_id=new_user.id,
-        )
-        db.session.add(new_info)
-        db.session.commit()
+            # -------------------------
+            # SAVE INFORMATION
+            # -------------------------
+            new_info = Information(
+                leadership=leadership,
+                leadership_desc=leadership_desc,
+                motivation=motivation,
+                knowledge_use=knowledge_use,
+                commitment=commitment,
+                signature=signature,
+                sign_date=sign_date,
+                article1=article1_url,
+                article2=article2_url,
+                user_id=new_user.id,
+            )
 
-        # ✅ Optional CSV backup
-        import csv
-        from datetime import datetime
-        BACKUP_FOLDER = "backups"
-        os.makedirs(BACKUP_FOLDER, exist_ok=True)
-        csv_file = os.path.join(BACKUP_FOLDER, "form_backup.csv")
-        file_exists = os.path.isfile(csv_file)
+            db.session.add(new_info)
+            db.session.commit()
 
-        with open(csv_file, mode="a", newline="", encoding="utf-8") as file:
-            writer = csv.writer(file)
-            if not file_exists:
-                writer.writerow([
-                    "timestamp", "user_id", "fullname", "email", "age", "level", "school", "phone",
-                    "guardian", "occupation", "financial", "intelligence", "grit", "growth",
-                    "giving_back", "waec_file", "jamb_file", "transcript"
-                ])
-            writer.writerow([
-                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                new_user.id, fullname, email, age, level, school, phone, guardian, occupation,
-                financial, intelligence, grit, growth, giving_back, waec_url, jamb_url, transcript_url
-            ])
+            # Console log
+            print(f"[SUCCESS] User created: {new_user.fullname} (ID: {new_user.id})")
 
-        print(f"✅ User created: {new_user.fullname} ({new_user.school})")
-        print(f"✅ Uploaded Files: WAEC={waec_url}, JAMB={jamb_url}, TRANSCRIPT={transcript_url}")
+            return ("", 204)
 
-        return ("", 204)
+        except Exception as e:
+            db.session.rollback()
+            print(f"[ERROR] Form submission failed: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            flash("An error occurred while submitting your application. Please try again.", "error")
+            return redirect(url_for("scholarship"))
 
-    return render_template('users/index.html')
+    return render_template("users/index.html")
 
 
 # ------------------------------------------------------------
